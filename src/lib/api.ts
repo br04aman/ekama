@@ -3,8 +3,13 @@ const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 export function getImageUrl(imagePath?: string): string {
   if (!imagePath) return '';
   if (imagePath.startsWith('data:') || imagePath.startsWith('http')) return imagePath;
-  if (imagePath.startsWith('/')) return `${BASE_URL}${imagePath}`;
-  return `${BASE_URL}/${imagePath}`;
+
+  // If it starts with /images, it is a static asset in the frontend public folder
+  if (imagePath.startsWith('/images')) return imagePath;
+
+  // Otherwise, if it starts with / or is a relative path, we assume it's a backend upload
+  const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+  return `${BASE_URL}${cleanPath}`;
 }
 
 export async function apiFetch(path: string, options: RequestInit = {}) {
