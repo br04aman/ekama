@@ -38,7 +38,8 @@ app.use(helmet({
 
 // CORS configuration — allow any localhost origin in dev so Vite (5173 / 8080 / etc.) works
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:8080',
+  process.env.FRONTEND_URL || 'https://ekama-one.vercel.app',
+  'https://ekama-one.vercel.app',
   'http://localhost:5173',
   'http://localhost:3000',
   'http://localhost:8080',

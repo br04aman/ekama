@@ -1,4 +1,13 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const IS_PROD = import.meta.env.PROD || window.location.hostname !== 'localhost';
+const PROD_API_URL = 'https://ekama.onrender.com';
+const DEV_API_URL = 'http://localhost:3001';
+
+const BASE_URL = import.meta.env.VITE_API_URL || (IS_PROD ? PROD_API_URL : DEV_API_URL);
+
+if (IS_PROD) {
+  console.log('[API] Environment: Production');
+  console.log(`[API] Using Base URL: ${BASE_URL}`);
+}
 
 export function getImageUrl(imagePath?: string): string {
   if (!imagePath) return '';
