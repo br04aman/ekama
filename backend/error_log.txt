@@ -24,3 +24,783 @@ MulterError: File too large
     at writeOrBuffer (node:internal/streams/writable:572:12)
     at _write (node:internal/streams/writable:501:10)
 
+[2026-03-08T11:12:45.800Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:12:45.804Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:12:45.807Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:12:45.811Z] OPTIONS /api/settings/home_page_layout
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:12:45.834Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:12:48.890Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:12:48.892Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:12:48.895Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:12:48.898Z] OPTIONS /api/settings/home_page_layout
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:12:48.919Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:13:16.279Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:13:16.282Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:13:16.285Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:13:16.289Z] OPTIONS /api/settings/home_page_layout
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:13:16.302Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:35.809Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:35.813Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:35.817Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:35.821Z] OPTIONS /api/settings/home_page_layout
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:35.924Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:38.361Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:38.365Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:38.368Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:38.372Z] OPTIONS /api/settings/home_page_layout
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:38.375Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:39.473Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:39.477Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:39.481Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:39.484Z] OPTIONS /api/settings/home_page_layout
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:39.505Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:40.333Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:40.337Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:40.341Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:40.345Z] OPTIONS /api/settings/home_page_layout
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:40.364Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:52.236Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:52.240Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:52.243Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:52.246Z] OPTIONS /api/settings/home_page_layout
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:52.257Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:54.854Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:54.857Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:54.861Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:54.864Z] OPTIONS /api/settings/home_page_layout
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:54.874Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:57.333Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:57.337Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:57.340Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:57.343Z] OPTIONS /api/settings/home_page_layout
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:18:57.355Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:20:19.411Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:20:19.413Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:20:19.416Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:20:19.420Z] OPTIONS /api/settings/home_page_layout
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:20:19.609Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:23:24.264Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:23:24.267Z] OPTIONS /api/collections?limit=100
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:23:24.270Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:23:24.272Z] OPTIONS /api/settings/home_page_layout
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+
+[2026-03-08T11:23:24.380Z] OPTIONS /api/products?limit=6&sortBy=createdAt&sortOrder=DESC
+Error: CORS blocked: https://ekama-one.vercel.app
+    at origin (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\src\server.ts:55:14)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:219:13
+    at optionsCallback (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:199:9)
+    at corsMiddleware (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\cors\lib\index.js:204:7)
+    at Layer.handle [as handle_request] (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\express\lib\router\index.js:280:10)
+    at internalNext (C:\Users\br04a\Downloads\ekama-lov\ekama\backend\node_modules\helmet\index.cjs:537:6)
+

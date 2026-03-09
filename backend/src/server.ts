@@ -82,12 +82,20 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Static file serving for uploaded images with cross-origin headers
-app.use('/uploads', express.static(path.join(__dirname, '../public/uploads'), {
-  setHeaders: (res) => {
-    res.set('Access-Control-Allow-Origin', process.env.FRONTEND_URL || 'https://ekama-one.vercel.app');
-    res.set('Cross-Origin-Resource-Policy', 'cross-origin');
-  }
-}));
+const uploadPaths = [
+  path.join(__dirname, '../public/uploads'),
+  path.join(process.cwd(), 'public/uploads'),
+  path.join(process.cwd(), 'backend/public/uploads')
+];
+
+uploadPaths.forEach(uploadPath => {
+  app.use('/uploads', express.static(uploadPath, {
+    setHeaders: (res) => {
+      res.set('Access-Control-Allow-Origin', process.env.FRONTEND_URL || 'https://ekama-one.vercel.app');
+      res.set('Cross-Origin-Resource-Policy', 'cross-origin');
+    }
+  }));
+});
 
 // API routes
 app.use('/api/products', productRoutes);
