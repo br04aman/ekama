@@ -1,29 +1,28 @@
-import { Home, LayoutGrid, Heart, User, ShoppingCart } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+"use client";
+
 import { useCart } from "@/hooks/use-cart";
+import { Heart, Home, LayoutGrid, ShoppingCart, User } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const BottomNav = () => {
-    const location = useLocation();
+    const pathname = usePathname();
     const { totalItems } = useCart();
 
     const isActive = (path: string) => {
-        const fullPath = location.pathname + location.search + location.hash;
-
-        if (path === fullPath) return true;
-
         if (path === "/") {
-            return location.pathname === "/" && !location.hash;
+            return pathname === "/";
         }
 
         if (path === "/profile") {
-            return location.pathname === "/profile" && !location.pathname.includes("wishlist");
+            return pathname === "/profile" && !pathname.includes("wishlist");
         }
 
         if (path === "/collections/all") {
-            return location.pathname.startsWith("/collections");
+            return pathname.startsWith("/collections");
         }
 
-        return location.pathname.startsWith(path);
+        return pathname.startsWith(path);
     };
 
     const pathsToHideNav = [
@@ -36,7 +35,7 @@ const BottomNav = () => {
         "/profile/orders",
     ];
 
-    const shouldHideNav = pathsToHideNav.some(path => location.pathname === path) || location.pathname.startsWith('/products/');
+    const shouldHideNav = pathsToHideNav.some(path => pathname === path) || (pathname && pathname.startsWith('/products/'));
 
     if (shouldHideNav) return null;
 
@@ -53,7 +52,7 @@ const BottomNav = () => {
             {navItems.map((item) => (
                 <Link
                     key={item.label}
-                    to={item.path}
+                    href={item.path}
                     className={`relative flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors ${isActive(item.path) ? "text-orange-600 font-semibold" : "text-slate-500 hover:text-orange-400"
                         }`}
                 >

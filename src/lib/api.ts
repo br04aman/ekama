@@ -1,11 +1,14 @@
-const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname.startsWith('192.168.') || window.location.hostname.startsWith('10.');
-const IS_PROD = import.meta.env.PROD && !isLocal;
+const isBrowser = typeof window !== 'undefined';
+
+const isLocal = isBrowser && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname.startsWith('192.168.') || window.location.hostname.startsWith('10.'));
+
+const IS_PROD = process.env.NODE_ENV === 'production' && !isLocal;
 const PROD_API_URL = 'https://ekama.onrender.com';
 const DEV_API_URL = 'http://localhost:3001';
 
-const BASE_URL = import.meta.env.VITE_API_URL || (IS_PROD ? PROD_API_URL : DEV_API_URL);
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || (IS_PROD ? PROD_API_URL : DEV_API_URL);
 
-if (IS_PROD) {
+if (IS_PROD && isBrowser) {
   console.log('[API] Environment: Production');
   console.log(`[API] Using Base URL: ${BASE_URL}`);
 }
@@ -27,14 +30,16 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
 
   // Try to get token from localStorage for automatic authentication
   let token: string | null = null;
-  try {
-    const raw = localStorage.getItem("ekama-auth-v1");
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      token = parsed?.token || null;
+  if (isBrowser) {
+    try {
+      const raw = localStorage.getItem("ekama-auth-v1");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        token = parsed?.token || null;
+      }
+    } catch (e) {
+      console.error('[apiFetch] Error reading auth token:', e);
     }
-  } catch (e) {
-    console.error('[apiFetch] Error reading auth token:', e);
   }
 
   const res = await fetch(`${BASE_URL}${path}`, {
@@ -45,6 +50,7 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
       ...(options.headers || {})
     },
   });
+  
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     const errorMsg = data?.message || data?.error || `Request failed: ${res.status}`;

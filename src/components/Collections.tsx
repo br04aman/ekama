@@ -1,7 +1,9 @@
+"use client";
+
 import { apiFetch, getImageUrl } from '@/lib/api';
-import { ChevronRight, Coins, Gem, Gift, Heart, Mountain, Sparkles, Zap } from 'lucide-react';
+import { Coins, Gem, Gift, Heart, Mountain, Sparkles, Zap } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 const fallbackCollections = [
   {
@@ -140,7 +142,7 @@ const Collections = ({ title = "Shop Our Collections" }: { title?: string }) => 
             const IconComponent = collection.icon;
             return (
               <Link
-                to={to}
+                href={to}
                 key={collection.id}
                 className="group relative bg-white rounded-lg md:rounded-2xl shadow-sm md:shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-orange-300 overflow-hidden flex flex-col h-36 md:h-64"
                 onMouseEnter={() => setHoveredItem(collection.id)}
@@ -182,7 +184,7 @@ const Collections = ({ title = "Shop Our Collections" }: { title?: string }) => 
 
         <div className="text-center mt-12">
           <Link
-            to="/collections/all"
+            href="/collections/all"
             className="inline-block bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 px-8 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
           >
             View All Collections

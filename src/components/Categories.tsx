@@ -1,14 +1,15 @@
-import { Card } from "@/components/ui/card";
-import { apiFetch, getImageUrl } from "@/lib/api";
-import { Brain, Flame, HandHeart, Heart, Leaf, Shield, Sparkles, Star } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+"use client";
+
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
+    Carousel,
+    CarouselContent,
+    CarouselItem,
 } from "@/components/ui/carousel";
+import { apiFetch, getImageUrl } from "@/lib/api";
 import Autoplay from "embla-carousel-autoplay";
+import { Brain, Flame, HandHeart, Heart, Leaf, Shield, Sparkles, Star } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export const categories: Array<{ id: string | number; name: string; icon: any; color: string; bgColor: string; image?: string }> = [
   {
@@ -147,7 +148,7 @@ const Categories = ({ heroCollectionIds }: { heroCollectionIds?: string[] }) => 
               return (
                 <CarouselItem key={category.id} className="pl-2 md:pl-4 basis-1/4 md:basis-1/6 lg:basis-[12.5%] min-w-[70px]">
                   <Link
-                    to={`/collections/${category.id}`}
+                    href={`/collections/${category.id}`}
                     className="flex flex-col items-center gap-1.5 w-full cursor-pointer group"
                   >
                     <div className="relative flex justify-center w-full">

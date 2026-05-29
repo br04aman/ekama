@@ -1,14 +1,17 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
-import { Menu, ShoppingCart, User } from "lucide-react";
+import { Menu, User } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
 
 const Header = () => {
   const { totalItems } = useCart();
   const { isAuthenticated, logout, user } = useAuth();
-  const location = useLocation();
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isRudrakshaOpen, setIsRudrakshaOpen] = useState(false);
@@ -26,11 +29,11 @@ const Header = () => {
   // Close mobile menu on route change
   useEffect(() => {
     setIsMenuOpen(false);
-  }, [location.pathname]);
+  }, [pathname]);
 
   // Check if any dropdown is open
   const shouldShowWhiteBg = isScrolled || isMenuOpen || isRudrakshaOpen || isKarungaliOpen;
-  const isAdminRoute = location.pathname.startsWith("/admin");
+  const isAdminRoute = pathname && pathname.startsWith("/admin");
   const isAdminHeader = isAdminRoute && isAuthenticated && user?.role === "admin";
 
   if (isAdminHeader) {
@@ -39,7 +42,7 @@ const Header = () => {
         <div className="border-b border-orange-200">
           <div className="max-w-[1100px] mx-auto flex h-24 items-center justify-end px-4">
             <Button asChild variant="ghost" size="icon" className="bg-orange-100 hover:bg-orange-200 text-orange-700 hover:text-orange-800 rounded-full transition-all duration-300">
-              <Link to="/profile">
+              <Link href="/profile">
                 <User className="h-5 w-5" />
               </Link>
             </Button>
@@ -57,7 +60,7 @@ const Header = () => {
         <div className="max-w-[1100px] mx-auto flex h-24 items-center justify-between px-4">
           {/* Logo */}
           <div className="flex items-center gap-8">
-            <a href="/" className="flex items-center space-x-3 group">
+            <Link href="/" className="flex items-center space-x-3 group">
               <div className="flex flex-col">
                 <div className="relative h-10 flex items-center">
                   <span className="text-3xl font-bold bg-gradient-to-r from-black via-red-600 to-black bg-clip-text text-transparent animate-flash-hindi">
@@ -71,7 +74,7 @@ const Header = () => {
                   यद् भावं तद् भवति
                 </span>
               </div>
-            </a>
+            </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-6">
@@ -146,7 +149,7 @@ const Header = () => {
             {isAuthenticated ? (
               <div onClick={() => setIsMenuOpen(false)}>
                 <Button asChild variant="ghost" size="icon" className="bg-orange-100 hover:bg-orange-200 text-orange-700 hover:text-orange-800 rounded-full transition-all duration-300">
-                  <Link to="/profile">
+                  <Link href="/profile">
                     <User className="h-5 w-5" />
                   </Link>
                 </Button>
@@ -154,7 +157,7 @@ const Header = () => {
             ) : (
               <div onClick={() => setIsMenuOpen(false)}>
                 <Button asChild variant="ghost" size="icon" className="bg-orange-100 hover:bg-orange-200 text-orange-700 hover:text-orange-800 rounded-full transition-all duration-300">
-                  <Link to="/login">
+                  <Link href="/login">
                     <User className="h-5 w-5" />
                   </Link>
                 </Button>

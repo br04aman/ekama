@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+"use client";
+
 import { apiFetch } from "@/lib/api";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const fallbackBanners = [
   { id: '1', title: '', image: "/images/ayodha-banner2.webp" },
@@ -69,7 +71,7 @@ const Hero = ({ heroCollectionIds }: { heroCollectionIds?: string[] }) => {
       >
         {slides.map((slide) => (
           <Link
-            to={slide.id.length > 2 ? `/collections/${slide.id}` : '#'}
+            href={slide.id.length > 2 ? `/collections/${slide.id}` : '#'}
             key={slide.id}
             className="block w-full h-full flex-shrink-0 relative group"
           >

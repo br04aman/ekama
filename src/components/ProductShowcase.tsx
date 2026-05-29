@@ -1,10 +1,11 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { apiFetch, getImageUrl } from "@/lib/api";
-import { ShoppingCart, Star, Heart } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useWishlist } from "@/hooks/use-wishlist";
+import { apiFetch, getImageUrl } from "@/lib/api";
+import { Heart, Star } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export const products = [
   {
@@ -118,7 +119,7 @@ const ProductShowcase = ({
     <div className="mb-10">
       <div className="flex items-center justify-between px-4 mb-4">
         <h2 className="text-xl font-bold text-slate-900">{title}</h2>
-        <Link to={title.toLowerCase().includes("trending") ? "/trending" : "/new-arrivals"}>
+        <Link href={title.toLowerCase().includes("trending") ? "/trending" : "/new-arrivals"}>
           <Button variant="link" className="text-orange-600 font-semibold p-0 h-auto">
             View All
           </Button>
@@ -129,7 +130,7 @@ const ProductShowcase = ({
         {products.map((product) => (
           <Link
             key={product.id}
-            to={`/products/${product.id}`}
+            href={`/products/${product.id}`}
             className="min-w-[140px] max-w-[140px] bg-white border border-slate-100 rounded-lg overflow-hidden shadow-sm flex flex-col transition-all duration-300 hover:shadow-md cursor-pointer"
           >
             <div className="relative aspect-square bg-slate-50/50 p-2">
