@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import { useCart } from "@/hooks/use-cart";
 import { useToast } from "@/hooks/use-toast";
 import { useWishlist } from "@/hooks/use-wishlist";
+import { Skeleton } from "@/components/ui/skeleton";
 import { apiFetch, BASE_URL } from "@/lib/api";
 import { ChevronLeft, ChevronRight, Heart, RotateCcw, ShieldCheck, ShoppingCart, Star, Truck } from "lucide-react";
 import Link from "next/link";
