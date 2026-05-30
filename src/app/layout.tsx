@@ -1,12 +1,13 @@
+import BottomNav from "@/components/BottomNav";
+import { Providers } from "@/components/Providers";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Providers } from "@/components/Providers";
-import BottomNav from "@/components/BottomNav";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ekama.onrender.com"),
   title: "Ekama - Authentic Spiritual Products & Energy Stones",
   description: "Discover ekama's exclusive collection of lab-certified spiritual items, handcrafted prayer beads, energy stones, and meditation essentials for your spiritual journey.",
   openGraph: {
