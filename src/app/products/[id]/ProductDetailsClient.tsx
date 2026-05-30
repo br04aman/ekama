@@ -1,15 +1,15 @@
 "use client";
 
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { apiFetch, BASE_URL } from "@/lib/api";
-import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Heart, Star, ChevronLeft, ChevronRight, Check, ChevronDown, ShieldCheck, Truck, RotateCcw, ShoppingCart, Percent, Sparkles, Tag, FileText } from "lucide-react";
-import { useWishlist } from "@/hooks/use-wishlist";
+import Header from "@/components/Header";
 import { useCart } from "@/hooks/use-cart";
 import { useToast } from "@/hooks/use-toast";
+import { useWishlist } from "@/hooks/use-wishlist";
+import { apiFetch, BASE_URL } from "@/lib/api";
+import { ChevronLeft, ChevronRight, Heart, RotateCcw, ShieldCheck, ShoppingCart, Star, Truck } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
 type Product = {
   id: string;
@@ -125,13 +125,27 @@ export default function ProductDetailsClient({ id }: { id: string }) {
     return (
       <div className="min-h-screen bg-white">
         <Header />
-        <div className="max-w-[1100px] mx-auto px-4 py-8 animate-pulse">
+        <div className="max-w-[1100px] mx-auto px-4 py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="aspect-square bg-slate-100 rounded-2xl" />
             <div className="space-y-4">
-              <div className="h-8 bg-slate-100 rounded w-3/4" />
-              <div className="h-6 bg-slate-100 rounded w-1/4" />
-              <div className="h-24 bg-slate-100 rounded" />
+              <Skeleton className="aspect-square w-full rounded-2xl" />
+              <div className="flex gap-3">
+                <Skeleton className="w-20 h-20 rounded-xl" />
+                <Skeleton className="w-20 h-20 rounded-xl" />
+                <Skeleton className="w-20 h-20 rounded-xl" />
+              </div>
+            </div>
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <Skeleton className="h-8 w-3/4" />
+                <Skeleton className="h-4 w-1/4" />
+              </div>
+              <Skeleton className="h-10 w-1/3" />
+              <Skeleton className="h-32 w-full" />
+              <div className="flex gap-4">
+                <Skeleton className="h-14 flex-1 rounded-xl" />
+                <Skeleton className="h-14 flex-[1.5] rounded-xl" />
+              </div>
             </div>
           </div>
         </div>

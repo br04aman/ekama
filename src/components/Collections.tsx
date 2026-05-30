@@ -1,5 +1,6 @@
 "use client";
 
+import { Skeleton } from "@/components/ui/skeleton";
 import { apiFetch, getImageUrl } from '@/lib/api';
 import { Coins, Gem, Gift, Heart, Mountain, Sparkles, Zap } from 'lucide-react';
 import NextImage from 'next/image';
@@ -92,9 +93,11 @@ const normalizeImage = (image?: string, updatedAt?: string) => {
 const Collections = ({ title = "Shop Our Collections" }: { title?: string }) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [collections, setCollections] = useState(fallbackCollections);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
+    setIsLoading(true);
     apiFetch('/api/collections?limit=100')
       .then((res) => {
         const data = Array.isArray(res?.data) ? res.data : [];
@@ -117,9 +120,13 @@ const Collections = ({ title = "Shop Our Collections" }: { title?: string }) => 
         } else {
           setCollections(fallbackCollections);
         }
+        setIsLoading(false);
       })
       .catch(() => {
-        if (active) setCollections(fallbackCollections);
+        if (active) {
+          setCollections(fallbackCollections);
+          setIsLoading(false);
+        }
       });
     return () => {
       active = false;
@@ -138,51 +145,62 @@ const Collections = ({ title = "Shop Our Collections" }: { title?: string }) => 
 
         {/* Horizontal Sidebar Boxes */}
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6">
-          {collections.map((collection) => {
-            const to = `/collections/${collection.id}`;
-            const IconComponent = collection.icon;
-            return (
-              <Link
-                href={to}
-                key={collection.id}
-                className="group relative bg-white rounded-lg md:rounded-2xl shadow-sm md:shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-orange-300 overflow-hidden flex flex-col h-36 md:h-64"
-                onMouseEnter={() => setHoveredItem(collection.id)}
-                onMouseLeave={() => setHoveredItem(null)}
-              >
-                {/* Product Image */}
-                {collection.image && (
-                  <div className="relative h-[85%] md:h-[80%] overflow-hidden bg-slate-50/50 p-2">
-                    <NextImage
-                      src={collection.image}
-                      alt={collection.title}
-                      fill
-                      className="object-cover transform transition-all duration-500 scale-100 rounded-md"
-                      sizes="(max-width: 768px) 50vw, 33vw"
-                    />
-                  </div>
-                )}
-
-                {/* Content */}
-                <div className="p-1 h-[15%] md:h-[20%] flex flex-col items-center justify-center text-center">
-                  {/* Icon Container (only for items without images) */}
-                  {!collection.image && (
-                    <div className="relative mb-1 md:mb-2">
-                      <div className={`w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-br ${hoveredItem === collection.id ? collection.hoverGradient : collection.gradient} flex items-center justify-center transform transition-all duration-300 ${hoveredItem === collection.id ? 'scale-110 rotate-12' : 'scale-100'}`}>
-                        <IconComponent className="w-4 h-4 md:w-6 md:h-6 text-white" />
-                      </div>
+          {isLoading ? (
+            Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="bg-white rounded-lg md:rounded-2xl shadow-sm h-36 md:h-64 overflow-hidden border border-gray-100 flex flex-col">
+                <Skeleton className="h-[85%] md:h-[80%] w-full" />
+                <div className="p-1 h-[15%] md:h-[20%] flex items-center justify-center">
+                  <Skeleton className="h-4 w-2/3" />
+                </div>
+              </div>
+            ))
+          ) : (
+            collections.map((collection) => {
+              const to = `/collections/${collection.id}`;
+              const IconComponent = collection.icon;
+              return (
+                <Link
+                  href={to}
+                  key={collection.id}
+                  className="group relative bg-white rounded-lg md:rounded-2xl shadow-sm md:shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-orange-300 overflow-hidden flex flex-col h-36 md:h-64"
+                  onMouseEnter={() => setHoveredItem(collection.id)}
+                  onMouseLeave={() => setHoveredItem(null)}
+                >
+                  {/* Product Image */}
+                  {collection.image && (
+                    <div className="relative h-[85%] md:h-[80%] overflow-hidden bg-slate-50/50 p-2">
+                      <NextImage
+                        src={collection.image}
+                        alt={collection.title}
+                        fill
+                        className="object-cover transform transition-all duration-500 scale-100 rounded-md"
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                      />
                     </div>
                   )}
 
-                  <h3 className="text-[10px] md:text-base font-bold text-orange-900 group-hover:text-orange-700 transition-colors duration-300 line-clamp-1 md:line-clamp-2">
-                    {collection.title}
-                  </h3>
-                </div>
+                  {/* Content */}
+                  <div className="p-1 h-[15%] md:h-[20%] flex flex-col items-center justify-center text-center">
+                    {/* Icon Container (only for items without images) */}
+                    {!collection.image && (
+                      <div className="relative mb-1 md:mb-2">
+                        <div className={`w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-br ${hoveredItem === collection.id ? collection.hoverGradient : collection.gradient} flex items-center justify-center transform transition-all duration-300 ${hoveredItem === collection.id ? 'scale-110 rotate-12' : 'scale-100'}`}>
+                          <IconComponent className="w-4 h-4 md:w-6 md:h-6 text-white" />
+                        </div>
+                      </div>
+                    )}
 
-                {/* Hover Overlay */}
-                <div className={`absolute inset-0 bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10`} />
-              </Link>
-            );
-          })}
+                    <h3 className="text-[10px] md:text-base font-bold text-orange-900 group-hover:text-orange-700 transition-colors duration-300 line-clamp-1 md:line-clamp-2">
+                      {collection.title}
+                    </h3>
+                  </div>
+
+                  {/* Hover Overlay */}
+                  <div className={`absolute inset-0 bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10`} />
+                </Link>
+              );
+            })
+          )}
         </div>
 
         <div className="text-center mt-12">

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useWishlist } from "@/hooks/use-wishlist";
 import { apiFetch, getImageUrl } from "@/lib/api";
 import { Heart, Star } from "lucide-react";
@@ -84,12 +85,14 @@ const ProductShowcase = ({
   const [newArrivals, setNewArrivals] = useState(() => 
     initialNewArrivals ? mapProducts(initialNewArrivals) : products.slice(3, 6)
   );
+  const [isLoading, setIsLoading] = useState(!initialTrending || !initialNewArrivals);
   const { toggleWishlist, isInWishlist } = useWishlist();
 
   useEffect(() => {
     if (initialTrending && initialNewArrivals) return;
     
     let active = true;
+    setIsLoading(true);
 
     const fetchProducts = async () => {
       try {
@@ -116,6 +119,8 @@ const ProductShowcase = ({
         }
       } catch (err) {
         console.error("Failed to fetch product showcase", err);
+      } finally {
+        if (active) setIsLoading(false);
       }
     };
 
@@ -124,7 +129,7 @@ const ProductShowcase = ({
     return () => {
       active = false;
     };
-  }, [trendingProductIds, newArrivalsProductIds]);
+  }, [trendingProductIds, newArrivalsProductIds, initialTrending, initialNewArrivals]);
 
   const ProductRow = ({ title, products }: { title: string; products: typeof trendingItems }) => (
     <div className="mb-10">
@@ -138,48 +143,61 @@ const ProductShowcase = ({
       </div>
 
       <div className="flex overflow-x-auto gap-4 px-4 no-scrollbar pb-4">
-        {products.map((product) => (
-          <Link
-            key={product.id}
-            href={`/products/${product.id}`}
-            className="min-w-[140px] max-w-[140px] bg-white border border-slate-100 rounded-lg overflow-hidden shadow-sm flex flex-col transition-all duration-300 hover:shadow-md cursor-pointer"
-          >
-            <div className="relative aspect-square bg-slate-50/50 p-2">
-              <NextImage
-                src={product.image}
-                alt={product.name}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 140px, 140px"
-              />
-              <button
-                className="absolute top-1.5 right-1.5 p-1 bg-white/90 rounded-full text-orange-600 shadow-sm"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  toggleWishlist(String(product.id));
-                }}
-              >
-                <Heart className={`h-3 w-3 ${isInWishlist(String(product.id)) ? "fill-orange-600" : ""}`} />
-              </button>
+        {isLoading ? (
+          Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="min-w-[140px] max-w-[140px] bg-white border border-slate-100 rounded-lg overflow-hidden shadow-sm flex flex-col">
+              <Skeleton className="aspect-square w-full" />
+              <div className="p-2 space-y-2">
+                <Skeleton className="h-3 w-3/4" />
+                <Skeleton className="h-3 w-1/2" />
+                <Skeleton className="h-4 w-1/3" />
+              </div>
             </div>
+          ))
+        ) : (
+          products.map((product) => (
+            <Link
+              key={product.id}
+              href={`/products/${product.id}`}
+              className="min-w-[140px] max-w-[140px] bg-white border border-slate-100 rounded-lg overflow-hidden shadow-sm flex flex-col transition-all duration-300 hover:shadow-md cursor-pointer"
+            >
+              <div className="relative aspect-square bg-slate-50/50 p-2">
+                <NextImage
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 140px, 140px"
+                />
+                <button
+                  className="absolute top-1.5 right-1.5 p-1 bg-white/90 rounded-full text-orange-600 shadow-sm"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleWishlist(String(product.id));
+                  }}
+                >
+                  <Heart className={`h-3 w-3 ${isInWishlist(String(product.id)) ? "fill-orange-600" : ""}`} />
+                </button>
+              </div>
 
-            <div className="p-2 flex flex-col flex-1">
-              <h3 className="text-[10px] font-medium text-slate-800 line-clamp-2 mb-1 min-h-[24px]">
-                {product.name}
-              </h3>
-              <div className="flex items-center gap-1 mb-1.5">
-                <div className="flex items-center bg-green-600 text-white text-[9px] px-1 rounded gap-0.5">
-                  <span>{product.rating}</span>
-                  <Star className="h-2 w-2 fill-white" />
+              <div className="p-2 flex flex-col flex-1">
+                <h3 className="text-[10px] font-medium text-slate-800 line-clamp-2 mb-1 min-h-[24px]">
+                  {product.name}
+                </h3>
+                <div className="flex items-center gap-1 mb-1.5">
+                  <div className="flex items-center bg-green-600 text-white text-[9px] px-1 rounded gap-0.5">
+                    <span>{product.rating}</span>
+                    <Star className="h-2 w-2 fill-white" />
+                  </div>
+                </div>
+                <div className="mt-auto">
+                  <span className="text-xs font-bold text-slate-900">{product.price}</span>
                 </div>
               </div>
-              <div className="mt-auto">
-                <span className="text-xs font-bold text-slate-900">{product.price}</span>
-              </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))
+        )}
       </div>
     </div>
   );

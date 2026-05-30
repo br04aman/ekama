@@ -5,6 +5,7 @@ import {
     CarouselContent,
     CarouselItem,
 } from "@/components/ui/carousel";
+import { Skeleton } from "@/components/ui/skeleton";
 import { apiFetch, getImageUrl } from "@/lib/api";
 import Autoplay from "embla-carousel-autoplay";
 import { Brain, Flame, HandHeart, Heart, Leaf, Shield, Sparkles, Star } from "lucide-react";
@@ -12,8 +13,7 @@ import NextImage from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export const categories: Array<{ id: string | number; name: string; icon: any; color: string; bgColor: string; image?: string }> = [
-  {
+export const categories: Array<{ id: string | number; name: string; icon: any; color: string; bgColor: string; image?: string }> = [  {
     id: "rudraksha-bracelets",
     name: "Rudraksha Bracelets",
     icon: Sparkles,
@@ -167,38 +167,49 @@ const Categories = ({ heroCollectionIds, initialData }: { heroCollectionIds?: st
           className="w-full"
         >
           <CarouselContent className="-ml-2 md:-ml-4 py-2">
-            {displayCategories.map((category, index) => {
-              const Icon = category.icon;
-              return (
-                <CarouselItem key={category.id} className="pl-2 md:pl-4 basis-1/4 md:basis-1/6 lg:basis-[12.5%] min-w-[70px]">
-                  <Link
-                    href={`/collections/${category.id}`}
-                    className="flex flex-col items-center gap-1.5 w-full cursor-pointer group"
-                  >
-                    <div className="relative flex justify-center w-full">
-                      {category.image ? (
-                        <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-orange-50 group-hover:border-orange-200 transition-colors shadow-sm">
-                          <NextImage
-                            src={category.image}
-                            alt={category.name}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 56px, 64px"
-                          />
-                        </div>
-                      ) : (
-                        <div className={`${category.bgColor} ${category.color} w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center border-2 border-orange-50 group-hover:border-orange-200 transition-colors shadow-sm`}>
-                          <Icon className="h-7 w-7 md:h-8 md:w-8" />
-                        </div>
-                      )}
-                    </div>
-                    <span className="text-[10px] md:text-xs font-semibold text-slate-700 text-center leading-tight tracking-tight px-0.5 overflow-hidden text-ellipsis line-clamp-2 w-full max-w-[80px]">
-                      {category.name}
-                    </span>
-                  </Link>
+            {isLoading ? (
+              Array.from({ length: 8 }).map((_, i) => (
+                <CarouselItem key={i} className="pl-2 md:pl-4 basis-1/4 md:basis-1/6 lg:basis-[12.5%] min-w-[70px]">
+                  <div className="flex flex-col items-center gap-1.5 w-full">
+                    <Skeleton className="w-14 h-14 md:w-16 md:h-16 rounded-full" />
+                    <Skeleton className="h-3 w-12" />
+                  </div>
                 </CarouselItem>
-              );
-            })}
+              ))
+            ) : (
+              displayCategories.map((category, index) => {
+                const Icon = category.icon;
+                return (
+                  <CarouselItem key={category.id} className="pl-2 md:pl-4 basis-1/4 md:basis-1/6 lg:basis-[12.5%] min-w-[70px]">
+                    <Link
+                      href={`/collections/${category.id}`}
+                      className="flex flex-col items-center gap-1.5 w-full cursor-pointer group"
+                    >
+                      <div className="relative flex justify-center w-full">
+                        {category.image ? (
+                          <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-orange-50 group-hover:border-orange-200 transition-colors shadow-sm">
+                            <NextImage
+                              src={category.image}
+                              alt={category.name}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 56px, 64px"
+                            />
+                          </div>
+                        ) : (
+                          <div className={`${category.bgColor} ${category.color} w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center border-2 border-orange-50 group-hover:border-orange-200 transition-colors shadow-sm`}>
+                            <Icon className="h-7 w-7 md:h-8 md:w-8" />
+                          </div>
+                        )}
+                      </div>
+                      <span className="text-[10px] md:text-xs font-semibold text-slate-700 text-center leading-tight tracking-tight px-0.5 overflow-hidden text-ellipsis line-clamp-2 w-full max-w-[80px]">
+                        {category.name}
+                      </span>
+                    </Link>
+                  </CarouselItem>
+                );
+              })
+            )}
           </CarouselContent>
         </Carousel>
       </div>

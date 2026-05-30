@@ -2,11 +2,12 @@
 
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useCart } from "@/hooks/use-cart";
 import { apiFetch, getImageUrl } from "@/lib/api";
-import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { use, useEffect, useState } from "react";
 
 interface Product {
   id: string;
@@ -122,7 +123,12 @@ export default function CollectionPage({ params }: { params: Promise<{ id: strin
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="bg-white rounded-xl h-64 animate-pulse shadow-sm" />
+              <div key={i} className="bg-white rounded-xl h-64 shadow-sm p-3 space-y-3">
+                <Skeleton className="aspect-square w-full rounded-lg" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-8 w-full rounded-lg" />
+              </div>
             ))}
           </div>
         ) : error ? (
