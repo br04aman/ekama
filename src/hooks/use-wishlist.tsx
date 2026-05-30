@@ -1,6 +1,7 @@
 import { apiFetch } from "@/lib/api";
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { useToast } from "@/hooks/use-toast";
 
 export interface WishlistContextType {
     wishlistItems: string[];
@@ -13,6 +14,7 @@ const WishlistContext = createContext<WishlistContextType | null>(null);
 
 export const WishlistProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { user, token } = useAuth();
+    const { toast } = useToast();
     const [wishlistItems, setWishlistItems] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -43,14 +45,16 @@ export const WishlistProvider: React.FC<React.PropsWithChildren> = ({ children }
 
     const toggleWishlist = useCallback(async (productId: string) => {
         if (!user || !token) {
-            // If the user tries to add to wishlist without being logged in, we could redirect to login
-            // But for now, we just silently fail or show a console message.
-            console.warn("User must be logged in to use wishlist");
+            toast({
+                title: "Login required",
+                description: "Please login to save items to your wishlist.",
+                variant: "destructive"
+            });
             return;
         }
 
         try {
-            // Optimistic upate
+            // Optimistic update
             setWishlistItems(prev =>
                 prev.includes(productId)
                     ? prev.filter(id => id !== productId)
@@ -70,7 +74,7 @@ export const WishlistProvider: React.FC<React.PropsWithChildren> = ({ children }
             // Revert optimism by re-fetching
             await fetchWishlist();
         }
-    }, [user, token, fetchWishlist]);
+    }, [user, token, fetchWishlist, toast]);
 
     const isInWishlist = useCallback((productId: string) => {
         return wishlistItems.includes(productId);
