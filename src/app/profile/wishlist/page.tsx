@@ -1,16 +1,16 @@
 "use client";
 
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useWishlist } from "@/hooks/use-wishlist";
 import { apiFetch, BASE_URL } from "@/lib/api";
 import { ChevronLeft, Heart, ShoppingBag } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Skeleton } from "@/components/ui/skeleton";
 import NextImage from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function MyWishlist() {
     const { wishlistItems, toggleWishlist } = useWishlist();
@@ -32,8 +32,11 @@ export default function MyWishlist() {
                 if ((res as any)?.data) {
                     setWishlistProducts((res as any).data);
                 }
-            } catch (err) {
+            } catch (err: any) {
                 console.error("Failed to fetch wishlist products", err);
+                // If the error is "Product not found", it means some items in the wishlist are invalid
+                // We should still stop loading and maybe show what we have (which will be empty)
+                setWishlistProducts([]);
             } finally {
                 setLoading(false);
             }
