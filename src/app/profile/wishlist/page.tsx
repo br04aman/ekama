@@ -33,10 +33,18 @@ export default function MyWishlist() {
                     setWishlistProducts((res as any).data);
                 }
             } catch (err: any) {
-                console.error("Failed to fetch wishlist products", err);
-                // If the error is "Product not found", it means some items in the wishlist are invalid
-                // We should still stop loading and maybe show what we have (which will be empty)
-                setWishlistProducts([]);
+                console.error("Batch fetch failed, trying individual fetches...", err);
+                
+                // Fallback: Fetch items individually if batch fails (e.g., due to one stale ID)
+                const individualResults = await Promise.allSettled(
+                    wishlistItems.map(id => apiFetch(`/api/products/${id}`))
+                );
+                
+                const validProducts = individualResults
+                    .filter(result => result.status === 'fulfilled')
+                    .map(result => (result as PromiseFulfilledResult<any>).value.data);
+                
+                setWishlistProducts(validProducts);
             } finally {
                 setLoading(false);
             }
@@ -67,7 +75,7 @@ export default function MyWishlist() {
                             </div>
                         ))}
                     </div>
-                ) : wishlistItems.length === 0 ? (
+                ) : wishlistProducts.length === 0 ? (
                     <Card className="bg-white rounded-2xl p-16 text-center shadow-sm border-none">
                         <Heart className="mx-auto h-16 w-16 text-slate-100 mb-4" />
                         <h2 className="text-xl font-bold text-slate-900 mb-2">Your wishlist is empty</h2>
