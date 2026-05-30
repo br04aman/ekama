@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { apiFetch, getImageUrl } from "@/lib/api";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { Trash2, Plus, Settings, LayoutDashboard, ShoppingBag, Tags, Video } from "lucide-react";
+import { LayoutDashboard, Plus, ShoppingBag, Tags, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export type StoreSettingsDoc = {
     heroTitle: string;
@@ -148,6 +148,33 @@ const StoreSettings = () => {
 
     const updateSetting = (key: keyof StoreSettingsDoc, value: any) => {
         setSettings(prev => ({ ...prev, [key]: value }));
+    };
+
+    const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("images", file);
+
+        try {
+            toast({ title: "Uploading...", description: "Please wait while the banner is being uploaded." });
+            const res = await apiFetch("/api/products/upload-temp", { // Using an existing upload endpoint or a generic one if available
+                method: "POST",
+                body: formData,
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            if (res && res.urls && res.urls[0]) {
+                const newImages = [...settings.promoBannerImages];
+                newImages[index] = res.urls[0];
+                updateSetting("promoBannerImages", newImages);
+                toast({ title: "Upload successful", description: "Banner image updated." });
+            }
+        } catch (err) {
+            console.error("Upload failed", err);
+            toast({ title: "Upload failed", description: "Could not upload image. Please try using a URL instead.", variant: "destructive" });
+        }
     };
 
     if (loading) return <div className="py-20 text-center">Loading settings...</div>;
@@ -323,34 +350,71 @@ const StoreSettings = () => {
                             onCheckedChange={(val) => updateSetting("promoBannerVisible", val)} 
                         />
                     </div>
-                    <div className="space-y-3">
-                        <label className="text-sm font-bold text-slate-700">Banner Image URLs</label>
+                    <div className="space-y-4">
+                        <label className="text-sm font-bold text-slate-700">Banner Images</label>
                         {settings.promoBannerImages.map((url, idx) => (
-                            <div key={idx} className="flex gap-2">
-                                <Input 
-                                    value={url} 
-                                    onChange={(e) => {
-                                        const newImages = [...settings.promoBannerImages];
-                                        newImages[idx] = e.target.value;
-                                        updateSetting("promoBannerImages", newImages);
-                                    }}
-                                    className="h-12 rounded-xl"
-                                />
-                                <Button 
-                                    variant="destructive" 
-                                    onClick={() => updateSetting("promoBannerImages", settings.promoBannerImages.filter((_, i) => i !== idx))}
-                                    className="rounded-xl h-12 w-12 p-0"
-                                >
-                                    <Trash2 className="h-4 w-4" />
-                                </Button>
+                            <div key={idx} className="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-4">
+                                <div className="flex items-center justify-between mb-2">
+                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Banner {idx + 1}</span>
+                                    <Button 
+                                        variant="ghost" 
+                                        size="sm"
+                                        onClick={() => updateSetting("promoBannerImages", settings.promoBannerImages.filter((_, i) => i !== idx))}
+                                        className="text-red-500 hover:text-red-700 hover:bg-red-50 h-8 px-2"
+                                    >
+                                        <Trash2 className="h-4 w-4 mr-1" /> Remove
+                                    </Button>
+                                </div>
+                                
+                                <div className="grid md:grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-slate-400 uppercase flex items-center gap-1">
+                                            <LinkIcon className="h-3 w-3" /> Image URL
+                                        </label>
+                                        <Input 
+                                            value={url} 
+                                            placeholder="https://example.com/image.jpg"
+                                            onChange={(e) => {
+                                                const newImages = [...settings.promoBannerImages];
+                                                newImages[idx] = e.target.value;
+                                                updateSetting("promoBannerImages", newImages);
+                                            }}
+                                            className="h-10 rounded-xl bg-white"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-slate-400 uppercase flex items-center gap-1">
+                                            <Upload className="h-3 w-3" /> Direct Upload
+                                        </label>
+                                        <div className="relative h-10 w-full bg-white border border-slate-200 rounded-xl flex items-center px-3 cursor-pointer hover:border-orange-500 transition-all">
+                                            <Upload className="h-4 w-4 text-slate-400 mr-2" />
+                                            <span className="text-xs text-slate-500 truncate">Choose file...</span>
+                                            <input 
+                                                type="file" 
+                                                accept="image/*"
+                                                onChange={(e) => handleBannerUpload(e, idx)}
+                                                className="absolute inset-0 opacity-0 cursor-pointer"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {url && (
+                                    <div className="relative aspect-[21/9] w-full rounded-xl overflow-hidden border border-slate-200 bg-white">
+                                        <img src={getImageUrl(url)} className="w-full h-full object-cover" alt={`Preview ${idx + 1}`} />
+                                        <div className="absolute top-2 right-2 bg-black/50 backdrop-blur-md text-white text-[10px] px-2 py-1 rounded-full">
+                                            Preview
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         ))}
                         <Button 
                             variant="outline" 
                             onClick={() => updateSetting("promoBannerImages", [...settings.promoBannerImages, ""])}
-                            className="w-full h-12 rounded-xl border-dashed border-2 gap-2"
+                            className="w-full h-12 rounded-xl border-dashed border-2 gap-2 text-slate-500 hover:text-orange-600 hover:border-orange-600"
                         >
-                            <Plus className="h-4 w-4" /> Add Banner URL
+                            <Plus className="h-4 w-4" /> Add New Banner Slot
                         </Button>
                     </div>
 
