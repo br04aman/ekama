@@ -1,7 +1,10 @@
-import React from "react";
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
+"use client";
+
 import { getImageUrl } from "@/lib/api";
+import Autoplay from "embla-carousel-autoplay";
+import useEmblaCarousel from "embla-carousel-react";
+import NextImage from "next/image";
+import React from "react";
 
 interface PromoBannerProps {
     imageUrls?: string[];
@@ -30,13 +33,15 @@ const PromoBanner: React.FC<PromoBannerProps> = ({ imageUrls }) => {
 
     if (validUrls.length === 1) {
         return (
-            <section className="w-full mt-4 mb-2">
-                <div className="w-full bg-slate-50 overflow-hidden shadow-sm relative group">
-                    <img
+            <section className="w-full mt-4 mb-2 px-2 md:px-0">
+                <div className="w-full bg-slate-50 overflow-hidden shadow-sm relative group rounded-lg md:rounded-none aspect-[16/9] md:aspect-[21/9]">
+                    <NextImage
                         src={validUrls[0]}
                         alt="Promotional Banner"
-                        className="w-full min-h-[250px] max-h-[600px] object-cover"
-                        loading="lazy"
+                        fill
+                        className="object-cover"
+                        priority
+                        sizes="(max-width: 1100px) 100vw, 1100px"
                     />
                 </div>
             </section>
@@ -44,20 +49,22 @@ const PromoBanner: React.FC<PromoBannerProps> = ({ imageUrls }) => {
     }
 
     return (
-        <section className="w-full mt-4 mb-2">
-            <div className="w-full relative overflow-hidden shadow-sm group bg-slate-50">
+        <section className="w-full mt-4 mb-2 px-2 md:px-0">
+            <div className="w-full relative overflow-hidden shadow-sm group bg-slate-50 rounded-lg md:rounded-none">
                 <div className="overflow-hidden" ref={emblaRef}>
                     <div className="flex">
                         {validUrls.map((url, index) => (
                             <div
                                 key={index}
-                                className="flex-[0_0_100%] min-w-0"
+                                className="flex-[0_0_100%] min-w-0 relative aspect-[16/9] md:aspect-[21/9]"
                             >
-                                <img
+                                <NextImage
                                     src={url}
                                     alt={`Promotional Banner ${index + 1}`}
-                                    className="w-full h-auto object-cover max-h-[600px]"
-                                    loading={index === 0 ? "eager" : "lazy"}
+                                    fill
+                                    className="object-cover"
+                                    priority={index === 0}
+                                    sizes="(max-width: 1100px) 100vw, 1100px"
                                 />
                             </div>
                         ))}

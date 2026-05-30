@@ -8,6 +8,7 @@ import {
 import { apiFetch, getImageUrl } from "@/lib/api";
 import Autoplay from "embla-carousel-autoplay";
 import { Brain, Flame, HandHeart, Heart, Leaf, Shield, Sparkles, Star } from "lucide-react";
+import NextImage from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -78,11 +79,34 @@ const normalizeImage = (image?: string, updatedAt?: string) => {
   return `${url}${separator}v=${encodeURIComponent(updatedAt)}`;
 };
 
-const Categories = ({ heroCollectionIds }: { heroCollectionIds?: string[] }) => {
-  const [remoteCategories, setRemoteCategories] = useState<Array<{ id: string | number; name: string; image?: string; updatedAt?: string; bgColor?: string; color?: string; icon?: any }>>([]);
-  const [isLoading, setIsLoading] = useState(true);
+const Categories = ({ heroCollectionIds, initialData }: { heroCollectionIds?: string[], initialData?: any[] }) => {
+  const [remoteCategories, setRemoteCategories] = useState<Array<{ id: string | number; name: string; image?: string; updatedAt?: string; bgColor?: string; color?: string; icon?: any }>>(() => {
+    if (initialData && initialData.length > 0) {
+      let mapped = initialData.map((item: any, idx: number) => {
+        const fb = categories[idx % categories.length];
+        return {
+          id: item.slug || item.id,
+          name: item.name,
+          image: normalizeImage(item.image, item.updatedAt),
+          updatedAt: item.updatedAt,
+          bgColor: fb.bgColor,
+          color: fb.color,
+          icon: fb.icon
+        };
+      });
+
+      if (heroCollectionIds && heroCollectionIds.length > 0) {
+        mapped = mapped.filter((item: any) => heroCollectionIds.includes(item.id));
+      }
+      return mapped.length > 0 ? mapped : categories;
+    }
+    return [];
+  });
+  const [isLoading, setIsLoading] = useState(!initialData);
 
   useEffect(() => {
+    if (initialData && initialData.length > 0) return;
+    
     let active = true;
     setIsLoading(true);
 
@@ -121,7 +145,7 @@ const Categories = ({ heroCollectionIds }: { heroCollectionIds?: string[] }) => 
     return () => {
       active = false;
     };
-  }, [heroCollectionIds]);
+  }, [heroCollectionIds, initialData]);
 
   const displayCategories = remoteCategories;
 
@@ -153,11 +177,15 @@ const Categories = ({ heroCollectionIds }: { heroCollectionIds?: string[] }) => 
                   >
                     <div className="relative flex justify-center w-full">
                       {category.image ? (
-                        <img
-                          src={category.image}
-                          alt={category.name}
-                          className="w-14 h-14 md:w-16 md:h-16 rounded-full object-cover border-2 border-orange-50 group-hover:border-orange-200 transition-colors shadow-sm"
-                        />
+                        <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-orange-50 group-hover:border-orange-200 transition-colors shadow-sm">
+                          <NextImage
+                            src={category.image}
+                            alt={category.name}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 56px, 64px"
+                          />
+                        </div>
                       ) : (
                         <div className={`${category.bgColor} ${category.color} w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center border-2 border-orange-50 group-hover:border-orange-200 transition-colors shadow-sm`}>
                           <Icon className="h-7 w-7 md:h-8 md:w-8" />

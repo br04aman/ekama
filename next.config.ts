@@ -8,6 +8,20 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'lovable.dev',
       },
+      {
+        protocol: 'https',
+        hostname: 'ekama.onrender.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+    ],
+    localPatterns: [
+      {
+        pathname: '/images/**',
+        search: '',
+      },
     ],
   },
 };

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useWishlist } from "@/hooks/use-wishlist";
 import { apiFetch, getImageUrl } from "@/lib/api";
 import { Heart, Star } from "lucide-react";
+import NextImage from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -47,13 +48,26 @@ const normalizeImage = (image?: string) => {
   return getImageUrl(image);
 };
 
+const mapProducts = (data: any[]) => {
+  return data.map((item) => ({
+    id: item.id,
+    name: item.name,
+    description: item.description || "",
+    price: `₹${Number(item.price || 0).toFixed(2)}`,
+    rating: Number(item.rating || 0),
+    image: normalizeImage(item.images?.[0]) || "/placeholder.svg",
+  }));
+};
+
 const ProductShowcase = ({
   trendingTitle = "Trending Now",
   newArrivalsTitle = "New Arrivals",
   trendingVisible = true,
   newArrivalsVisible = true,
   trendingProductIds = [],
-  newArrivalsProductIds = []
+  newArrivalsProductIds = [],
+  initialTrending,
+  initialNewArrivals
 }: {
   trendingTitle?: string;
   newArrivalsTitle?: string;
@@ -61,24 +75,21 @@ const ProductShowcase = ({
   newArrivalsVisible?: boolean;
   trendingProductIds?: string[];
   newArrivalsProductIds?: string[];
+  initialTrending?: any[];
+  initialNewArrivals?: any[];
 }) => {
-  const [trendingItems, setTrendingItems] = useState(products.slice(0, 3));
-  const [newArrivals, setNewArrivals] = useState(products.slice(3, 6));
+  const [trendingItems, setTrendingItems] = useState(() => 
+    initialTrending ? mapProducts(initialTrending) : products.slice(0, 3)
+  );
+  const [newArrivals, setNewArrivals] = useState(() => 
+    initialNewArrivals ? mapProducts(initialNewArrivals) : products.slice(3, 6)
+  );
   const { toggleWishlist, isInWishlist } = useWishlist();
 
   useEffect(() => {
+    if (initialTrending && initialNewArrivals) return;
+    
     let active = true;
-
-    const mapProducts = (data: any[]) => {
-      return data.map((item) => ({
-        id: item.id,
-        name: item.name,
-        description: item.description || "",
-        price: `₹${Number(item.price || 0).toFixed(2)}`,
-        rating: Number(item.rating || 0),
-        image: normalizeImage(item.images?.[0]) || "/placeholder.svg",
-      }));
-    };
 
     const fetchProducts = async () => {
       try {
@@ -134,10 +145,12 @@ const ProductShowcase = ({
             className="min-w-[140px] max-w-[140px] bg-white border border-slate-100 rounded-lg overflow-hidden shadow-sm flex flex-col transition-all duration-300 hover:shadow-md cursor-pointer"
           >
             <div className="relative aspect-square bg-slate-50/50 p-2">
-              <img
+              <NextImage
                 src={product.image}
                 alt={product.name}
-                className="object-cover w-full h-full"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 140px, 140px"
               />
               <button
                 className="absolute top-1.5 right-1.5 p-1 bg-white/90 rounded-full text-orange-600 shadow-sm"

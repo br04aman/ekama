@@ -2,6 +2,7 @@
 
 import { apiFetch, getImageUrl } from '@/lib/api';
 import { Coins, Gem, Gift, Heart, Mountain, Sparkles, Zap } from 'lucide-react';
+import NextImage from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -151,10 +152,12 @@ const Collections = ({ title = "Shop Our Collections" }: { title?: string }) => 
                 {/* Product Image */}
                 {collection.image && (
                   <div className="relative h-[85%] md:h-[80%] overflow-hidden bg-slate-50/50 p-2">
-                    <img
+                    <NextImage
                       src={collection.image}
                       alt={collection.title}
-                      className="w-full h-full object-cover transform transition-all duration-500 scale-100 rounded-md"
+                      fill
+                      className="object-cover transform transition-all duration-500 scale-100 rounded-md"
+                      sizes="(max-width: 768px) 50vw, 33vw"
                     />
                   </div>
                 )}
