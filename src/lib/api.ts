@@ -22,6 +22,13 @@ export function getImageUrl(imagePath?: string): string {
 
   // Otherwise, if it starts with / or is a relative path, we assume it's a backend upload
   const cleanPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+  
+  // In development, use relative path so Next.js proxy can handle it
+  if (!IS_PROD) {
+    return cleanPath;
+  }
+  
+  // In production, use full URL
   return `${BASE_URL}${cleanPath}`;
 }
 
