@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { apiFetch, getImageUrl } from "@/lib/api";
-import { LayoutDashboard, Plus, ShoppingBag, Tags, Trash2 } from "lucide-react";
+import { LayoutDashboard, Link as LinkIcon, Plus, ShoppingBag, Tags, Trash2, Upload } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export type StoreSettingsDoc = {
@@ -82,25 +82,42 @@ const StoreSettings = () => {
     const { token } = useAuth();
     const { toast } = useToast();
     const [loading, setLoading] = useState(true);
+    const [loadError, setLoadError] = useState<string | null>(null);
     const [saving, setSaving] = useState(false);
     const [settings, setSettings] = useState<StoreSettingsDoc>(defaultSettings);
     const [products, setProducts] = useState<{ id: string, name: string, image: string }[]>([]);
     const [collections, setCollections] = useState<{ id: string, name: string, image: string }[]>([]);
 
     useEffect(() => {
+        let active = true;
+
+        const withTimeout = async <T,>(promise: Promise<T>, ms: number): Promise<T> => {
+            return await Promise.race([
+                promise,
+                new Promise<T>((_resolve, reject) => {
+                    setTimeout(() => reject(new Error("Request timed out")), ms);
+                })
+            ]);
+        };
+
         const fetchSettingsAndProducts = async () => {
             try {
+                setLoading(true);
+                setLoadError(null);
+
                 const [settingsRes, productsRes, collectionsRes] = await Promise.all([
-                    apiFetch("/api/settings/home_page_layout"),
-                    apiFetch("/api/products?limit=100"), 
-                    apiFetch("/api/collections?limit=100") 
+                    withTimeout(apiFetch("/api/settings/home_page_layout"), 15000),
+                    withTimeout(apiFetch("/api/products?limit=100"), 15000),
+                    withTimeout(apiFetch("/api/collections?limit=100"), 15000)
                 ]);
 
                 if (settingsRes && (settingsRes as StoreSettingsDoc).heroTitle !== undefined) {
-                    setSettings({
-                        ...defaultSettings,
-                        ...(settingsRes as StoreSettingsDoc),
-                    });
+                    if (active) {
+                        setSettings({
+                            ...defaultSettings,
+                            ...(settingsRes as StoreSettingsDoc),
+                        });
+                    }
                 }
 
                 if (productsRes && (productsRes as any).data) {
@@ -109,7 +126,7 @@ const StoreSettings = () => {
                         name: p.name,
                         image: Array.isArray(p.images) ? p.images[0] : ""
                     }));
-                    setProducts(mapped);
+                    if (active) setProducts(mapped);
                 }
 
                 if (collectionsRes && (collectionsRes as any).data) {
@@ -118,23 +135,29 @@ const StoreSettings = () => {
                         name: c.name,
                         image: c.image || ""
                     }));
-                    setCollections(mapped);
+                    if (active) setCollections(mapped);
                 }
             } catch (err) {
                 console.error("Failed to load settings", err);
+                if (active) {
+                    setLoadError(err instanceof Error ? err.message : String(err));
+                }
             } finally {
-                setLoading(false);
+                if (active) setLoading(false);
             }
         };
 
         fetchSettingsAndProducts();
+        return () => {
+            active = false;
+        };
     }, []);
 
     const handleSave = async () => {
         setSaving(true);
         try {
             await apiFetch("/api/settings/home_page_layout", {
-                method: "POST",
+                method: "PUT",
                 body: JSON.stringify(settings),
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -159,7 +182,7 @@ const StoreSettings = () => {
 
         try {
             toast({ title: "Uploading...", description: "Please wait while the banner is being uploaded." });
-            const res = await apiFetch("/api/products/upload-temp", { // Using an existing upload endpoint or a generic one if available
+            const res = await apiFetch("/api/settings/upload", {
                 method: "POST",
                 body: formData,
                 headers: { Authorization: `Bearer ${token}` }
@@ -181,6 +204,11 @@ const StoreSettings = () => {
 
     return (
         <div className="space-y-8 max-w-5xl mx-auto pb-20">
+            {loadError && (
+                <div className="bg-red-50 border border-red-100 text-red-700 rounded-2xl px-5 py-4 text-sm">
+                    {loadError}
+                </div>
+            )}
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-bold text-slate-900">Homepage Configuration</h1>
                 <Button onClick={handleSave} disabled={saving} className="bg-orange-600 hover:bg-orange-700">

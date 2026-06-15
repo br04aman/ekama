@@ -5,26 +5,26 @@ import StoreSettings from "@/components/admin/StoreSettings";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-    Dialog, DialogContent
+  Dialog, DialogContent
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { apiFetch, getImageUrl } from "@/lib/api";
 import {
-    Edit2,
-    ExternalLink,
-    LayoutDashboard,
-    LogOut,
-    Package,
-    Plus,
-    Settings,
-    ShoppingBag,
-    Tags,
-    Ticket,
-    Trash2,
-    Users,
-    X
+  Edit2,
+  ExternalLink,
+  LayoutDashboard,
+  LogOut,
+  Package,
+  Plus,
+  Settings,
+  ShoppingBag,
+  Tags,
+  Ticket,
+  Trash2,
+  Users,
+  X
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -202,7 +202,7 @@ const AdminClient = () => {
   const fetchCustomers = async () => {
     setCustomersLoading(true);
     try {
-      const res = await apiFetch('/api/admin/users');
+      const res = await apiFetch('/api/admin/users/customers');
       setCustomers((res as any)?.data || []);
     } catch (e) {
       console.error(e);

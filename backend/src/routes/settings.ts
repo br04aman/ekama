@@ -1,12 +1,10 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
-import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
-import { getStoreSettingsCollection } from '../utils/database';
 import { authenticate, authorizeAdmin } from '../middleware/auth';
+import { getStoreSettingsCollection } from '../utils/database';
 import { getUploadsDir } from '../utils/paths';
-import { optimizeImage } from '../utils/image';
 
 const router = express.Router();
 
@@ -60,16 +58,17 @@ router.get('/:id', async (req, res) => {
 // Admin ONLY route to handle file uploads for settings
 router.post('/upload', authenticate, authorizeAdmin, upload.array('images', 5), async (req, res) => {
     try {
-        const uploadedFiles = req.files as Express.Multer.File[];
-        const optimizedFilenames = await Promise.all(
-            uploadedFiles.map(file => optimizeImage(file.path, uploadsRoot))
-        );
-        const imageUrls = optimizedFilenames.map((filename) => `/uploads/${filename}`);
+        const uploadedFiles = (req.files || []) as Express.Multer.File[];
+        const imageUrls = uploadedFiles.map((file) => `/uploads/${file.filename}`);
         res.status(200).json({ urls: imageUrls });
         return;
     } catch (error) {
         console.error('Failed to upload image:', error);
-        res.status(500).json({ error: 'Failed to process image upload' });
+        const message = error instanceof Error ? error.message : String(error);
+        res.status(500).json({
+            error: 'Failed to process image upload',
+            message: process.env.NODE_ENV === 'production' ? undefined : message
+        });
     }
 });
 
