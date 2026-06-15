@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
@@ -28,12 +30,17 @@ const nextConfig: NextConfig = {
     root: __dirname,
   },
   async rewrites() {
-    return [
-      {
-        source: '/uploads/:path*',
-        destination: 'http://localhost:3001/uploads/:path*',
-      },
-    ];
+    if (isDev) {
+      return [
+        {
+          source: '/uploads/:path*',
+          destination: 'http://localhost:3001/uploads/:path*',
+        },
+      ];
+    }
+    // In production, we'll use ekama.onrender.com directly via getImageUrl,
+    // which already uses PROD_API_URL in production mode
+    return [];
   },
 };
 
