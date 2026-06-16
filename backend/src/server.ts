@@ -1,6 +1,8 @@
 // ⚠️ Dev-only: disable TLS certificate verification to fix Atlas SSL handshake errors
 // Must be set before any imports that use TLS (dotenv not yet loaded here)
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+if (process.env.NODE_ENV !== 'production') {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
 
 
 import './preloadEnv';

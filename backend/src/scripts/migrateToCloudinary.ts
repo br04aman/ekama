@@ -7,18 +7,47 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 
-// Load environment variables (same logic as preloadEnv.ts)
-const envPathsToTry = [
-  path.resolve(__dirname, '../../.env'),
-  path.resolve(__dirname, '../../../.env'),
+console.log('🔍 Current working directory:', process.cwd());
+console.log('🔍 __dirname:', __dirname);
+
+// Try all possible paths
+const possiblePaths = [
+  path.resolve(__dirname, '../../../.env'), // Up 3 from src/scripts
+  path.resolve(__dirname, '../../../../.env'), // Up 4 from src/scripts
   path.resolve(process.cwd(), '../.env'),
   path.resolve(process.cwd(), '.env'),
+  path.resolve('c:/Users/br04a/Downloads/ekama-lov/ekama/.env'),
 ];
 
-for (const envPath of envPathsToTry) {
-  const result = dotenv.config({ path: envPath });
-  if (!result.error) break;
+console.log('🔍 Trying paths:');
+possiblePaths.forEach((p, i) => {
+  console.log(`  ${i + 1}. ${p} (exists: ${fs.existsSync(p)})`);
+});
+
+// Find first existing .env
+let envLoaded = false;
+for (const p of possiblePaths) {
+  if (fs.existsSync(p)) {
+    console.log(`✅ Loading from ${p}`);
+    dotenv.config({ path: p });
+    envLoaded = true;
+    break;
+  }
 }
+
+if (!envLoaded) {
+  console.error('❌ Could not find .env file in any location!');
+  process.exit(1);
+}
+
+// Check if Cloudinary config is loaded
+if (!process.env.CLOUDINARY_URL && !process.env.CLOUDINARY_CLOUD_NAME) {
+  console.error('❌ Cloudinary environment variables not found!');
+  console.error('Please set CLOUDINARY_URL or CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET');
+  process.exit(1);
+}
+
+console.log('✅ Cloudinary configuration loaded!');
 
 import { uploadFile } from '../utils/cloudinaryUpload';
 import { getCollectionsCollection, getProductsCollection, initDatabase } from '../utils/database';

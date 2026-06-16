@@ -4,19 +4,40 @@
  */
 
 import dotenv from 'dotenv';
+import fs from 'fs';
 import path from 'path';
 
-// Load environment variables from root .env
-// From backend/src/scripts/ -> go up to project root
-const rootEnvPath = path.resolve(__dirname, '../../../.env');
-const result = dotenv.config({ path: rootEnvPath });
+console.log('🔍 Current working directory:', process.cwd());
+console.log('🔍 __dirname:', __dirname);
 
-if (result.error) {
-  console.log('⚠️  Could not load .env file from:', rootEnvPath);
-  // Try alternative path
-  const altPath = path.resolve(process.cwd(), '.env');
-  console.log('Trying alternative path:', altPath);
-  dotenv.config({ path: altPath });
+// Try all possible paths
+const possiblePaths = [
+  path.resolve(__dirname, '../../../.env'), // Up 3 from src/scripts
+  path.resolve(__dirname, '../../../../.env'), // Up 4 from src/scripts
+  path.resolve(process.cwd(), '../.env'),
+  path.resolve(process.cwd(), '.env'),
+  path.resolve('c:/Users/br04a/Downloads/ekama-lov/ekama/.env'),
+];
+
+console.log('🔍 Trying paths:');
+possiblePaths.forEach((p, i) => {
+  console.log(`  ${i + 1}. ${p} (exists: ${fs.existsSync(p)})`);
+});
+
+// Find first existing .env
+let envLoaded = false;
+for (const p of possiblePaths) {
+  if (fs.existsSync(p)) {
+    console.log(`✅ Loading from ${p}`);
+    dotenv.config({ path: p });
+    envLoaded = true;
+    break;
+  }
+}
+
+if (!envLoaded) {
+  console.error('❌ Could not find .env file in any location!');
+  process.exit(1);
 }
 
 import { v2 as cloudinary } from 'cloudinary';
@@ -35,13 +56,28 @@ async function testCloudinaryConnection(): Promise<void> {
   console.log(`  CLOUDINARY_API_KEY: ${apiKey ? '✅ Set' : '❌ Not set'}`);
   console.log(`  CLOUDINARY_API_SECRET: ${apiSecret ? '✅ Set (hidden)' : '❌ Not set'}`);
   console.log(`  CLOUDINARY_URL: ${cloudinaryUrl ? '✅ Set' : '❌ Not set'}`);
+  console.log(`  CLOUDINARY_URL value: ${cloudinaryUrl}`);
   console.log('');
 
   // Configure Cloudinary
   try {
     if (cloudinaryUrl) {
-      // Cloudinary SDK automatically detects CLOUDINARY_URL
-      cloudinary.config({ secure: true });
+      // Parse CLOUDINARY_URL explicitly to avoid env var caching issues
+      const url = new URL(cloudinaryUrl);
+      const cloudNameFromUrl = url.hostname;
+      const apiKeyFromUrl = url.username;
+      const apiSecretFromUrl = url.password;
+
+      console.log('🔍 Parsing CLOUDINARY_URL:');
+      console.log(`   Cloud Name: ${cloudNameFromUrl}`);
+      console.log(`   API Key: ${apiKeyFromUrl}`);
+
+      cloudinary.config({
+        cloud_name: cloudNameFromUrl,
+        api_key: apiKeyFromUrl,
+        api_secret: apiSecretFromUrl,
+        secure: true,
+      });
       console.log('✅ Cloudinary configured via CLOUDINARY_URL');
     } else if (cloudName && apiKey && apiSecret) {
       cloudinary.config({

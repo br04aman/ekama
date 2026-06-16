@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import { authenticate, authorizeAdmin } from '../middleware/auth';
+import { uploadMulterFile, UploadResult } from '../utils/cloudinaryUpload';
 import { getStoreSettingsCollection } from '../utils/database';
 
 const router = express.Router();
@@ -48,7 +49,7 @@ router.post('/upload', authenticate, authorizeAdmin, upload.array('images', 5), 
             }))
         );
         
-        const imageUrls = uploadResults.map(result => result.secure_url);
+        const imageUrls = uploadResults.map((result: UploadResult) => result.secure_url);
         res.status(200).json({ urls: imageUrls });
         return;
     } catch (error) {
@@ -70,7 +71,7 @@ router.post('/upload/video', authenticate, authorizeAdmin, uploadVideo.single('v
         }
         
         // Upload video to Cloudinary
-        const uploadResult = await uploadMulterFile(req.file, {
+        const uploadResult: UploadResult = await uploadMulterFile(req.file, {
             folder: 'ekama/settings',
             resource_type: 'video'
         });
