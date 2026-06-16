@@ -5,26 +5,26 @@ import StoreSettings from "@/components/admin/StoreSettings";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Dialog, DialogContent
+    Dialog, DialogContent
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { apiFetch, getImageUrl } from "@/lib/api";
 import {
-  Edit2,
-  ExternalLink,
-  LayoutDashboard,
-  LogOut,
-  Package,
-  Plus,
-  Settings,
-  ShoppingBag,
-  Tags,
-  Ticket,
-  Trash2,
-  Users,
-  X
+    Edit2,
+    ExternalLink,
+    LayoutDashboard,
+    LogOut,
+    Package,
+    Plus,
+    Settings,
+    ShoppingBag,
+    Tags,
+    Ticket,
+    Trash2,
+    Users,
+    X
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -190,7 +190,7 @@ const AdminClient = () => {
   const fetchOrders = async () => {
     setOrdersLoading(true);
     try {
-      const res = await apiFetch('/api/payments/admin/orders');
+      const res = await apiFetch('/api/admin/orders');
       if (res?.success) setOrders(res.data || []);
     } catch (e) {
       console.error(e);
@@ -208,6 +208,19 @@ const AdminClient = () => {
       console.error(e);
     } finally {
       setCustomersLoading(false);
+    }
+  };
+
+  const handleDeleteProduct = async (productId: string) => {
+    try {
+      await apiFetch(`/api/admin/products/${productId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast({ title: 'Success', description: 'Product deleted successfully.' });
+      fetchProducts();
+    } catch (e) {
+      toast({ title: 'Error', description: String(e), variant: 'destructive' });
     }
   };
 
@@ -249,7 +262,7 @@ const AdminClient = () => {
         }
       });
 
-      const endpoint = editingProductId ? `/api/products/${editingProductId}` : '/api/products';
+      const endpoint = editingProductId ? `/api/admin/products/${editingProductId}` : '/api/admin/products';
       const method = editingProductId ? 'PATCH' : 'POST';
 
       await apiFetch(endpoint, {
@@ -609,7 +622,7 @@ const AdminClient = () => {
                                     adminProductId: p.adminProductId
                                   } as any);
                                 }}><Edit2 className="h-4 w-4" /></Button>
-                                <Button variant="ghost" size="icon" className="text-slate-400 hover:text-red-600"><Trash2 className="h-4 w-4" /></Button>
+                                <Button variant="ghost" size="icon" className="text-slate-400 hover:text-red-600" onClick={() => handleDeleteProduct(p.id)}><Trash2 className="h-4 w-4" /></Button>
                               </div>
                             </td>
                           </tr>

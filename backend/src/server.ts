@@ -6,8 +6,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
-import fs from 'fs';
 import rateLimit from 'express-rate-limit';
+import fs from 'fs';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import path from 'path';
@@ -18,8 +18,15 @@ import paymentRoutes from './routes/payments';
 import productRoutes from './routes/products';
 import settingsRoutes from './routes/settings';
 import userRoutes from './routes/users';
-import adminUsersRoute from './routes/admin/users';
+
+// Admin routes
+import adminCollectionsRoute from './routes/admin/collections';
 import adminCouponsRoute from './routes/admin/coupons';
+import adminOrdersRoute from './routes/admin/orders';
+import adminProductsRoute from './routes/admin/products';
+import adminUsersRoute from './routes/admin/users';
+
+// Customer routes
 import customerCouponsRoute from './routes/customer/coupons';
 import { initDatabase } from './utils/database';
 import { getUploadsDir } from './utils/paths';
@@ -114,16 +121,21 @@ uniquePaths.forEach(uploadPath => {
   }
 });
 
-// API routes
+// Public/user API routes (for customers)
 app.use('/api/products', productRoutes);
 app.use('/api/collections', collectionRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/admin/users', adminUsersRoute);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/settings', settingsRoutes);
 
-// Coupon APIs
+// Admin API routes (under /api/admin prefix)
+app.use('/api/admin/users', adminUsersRoute);
+app.use('/api/admin/products', adminProductsRoute);
+app.use('/api/admin/collections', adminCollectionsRoute);
 app.use('/api/admin/coupons', adminCouponsRoute);
+app.use('/api/admin/orders', adminOrdersRoute);
+
+// Customer API routes (under /api/customer prefix)
 app.use('/api/customer/coupons', customerCouponsRoute);
 
 // Health check endpoint
