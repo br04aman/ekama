@@ -3,8 +3,9 @@
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 
+import './preloadEnv';
+
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 import fs from 'fs';
@@ -30,9 +31,6 @@ import adminUsersRoute from './routes/admin/users';
 import customerCouponsRoute from './routes/customer/coupons';
 import { initDatabase } from './utils/database';
 import { getUploadsDir } from './utils/paths';
-
-const rootEnvPath = path.resolve(__dirname, '../../.env');
-dotenv.config({ path: rootEnvPath });
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -212,4 +210,4 @@ initDatabase()
   });
 
 export default app;
-// Trigger restart
+// Trigger restart again

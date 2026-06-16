@@ -1,28 +1,18 @@
 import type { Request } from 'express';
 import express from 'express';
-import path from 'path';
 import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { authenticate, authorizeAdmin } from '../../middleware/auth';
 import { ApiResponse, AuthTokenPayload, Collection } from '../../types';
+import { uploadMulterFile, deleteFromCloudinary, extractPublicId } from '../../utils/cloudinaryUpload';
 import { getCollectionsCollection, getProductsCollection } from '../../utils/database';
-import { getUploadsDir } from '../../utils/paths';
-import { optimizeImage } from '../../utils/image';
 
 const router = express.Router();
 
-const uploadsRoot = getUploadsDir();
+// Use memory storage since we're uploading to Cloudinary
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: (_req, _file, cb) => {
-      cb(null, uploadsRoot);
-    },
-    filename: (_req, file, cb) => {
-      const ext = path.extname(file.originalname);
-      cb(null, `${uuidv4()}${ext}`);
-    }
-  }),
-  limits: { fileSize: 5 * 1024 * 1024 }
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
 
 router.post('/upload', authenticate, authorizeAdmin, upload.single('image'), async (req, res) => {
@@ -31,9 +21,13 @@ router.post('/upload', authenticate, authorizeAdmin, upload.single('image'), asy
       res.status(400).json({ error: 'No image file provided' });
       return;
     }
-    const optimizedFilename = await optimizeImage(req.file.path, uploadsRoot);
-    const imageUrl = `/uploads/${optimizedFilename}`;
-    res.status(200).json({ url: imageUrl });
+    
+    const uploadResult = await uploadMulterFile(req.file, {
+      folder: 'ekama/collections',
+      resource_type: 'image'
+    });
+    
+    res.status(200).json({ url: uploadResult.secure_url, publicId: uploadResult.public_id });
     return;
   } catch (error) {
     console.error('Failed to upload collection image:', error);
@@ -138,6 +132,25 @@ router.delete('/:id', authenticate, authorizeAdmin, async (req, res) => {
   const { id } = req.params;
 
   try {
+    const existing = await collections.findOne({ id });
+    if (!existing) {
+      return res.status(404).json({ success: false, error: 'Collection not found' });
+    }
+
+    // Delete image from Cloudinary if it's a Cloudinary URL
+    if (existing.image && existing.image.includes('cloudinary.com')) {
+      try {
+        const publicId = extractPublicId(existing.image);
+        if (publicId) {
+          await deleteFromCloudinary(publicId);
+          console.log(`🗑️ Deleted collection image from Cloudinary: ${publicId}`);
+        }
+      } catch (err) {
+        console.error(`Failed to delete collection image from Cloudinary:`, err);
+        // Continue with deletion even if Cloudinary delete fails
+      }
+    }
+
     const result = await collections.deleteOne({ id });
     if (result.deletedCount === 0) {
       return res.status(404).json({ success: false, error: 'Collection not found' });

@@ -1,19 +1,29 @@
-import express from 'express';
 import cors from 'cors';
-import helmet from 'helmet';
-import morgan from 'morgan';
-import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
-import path from 'path';
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import morgan from 'morgan';
+import path from 'path';
 
 const rootEnvPath = path.resolve(__dirname, '../../../.env');
 dotenv.config({ path: rootEnvPath });
 
 const app = express();
-const PORT = Number(process.env.GATEWAY_PORT || 3000);
+const DESIRED_PORT = Number(process.env.GATEWAY_PORT || 3000);
 const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3001';
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:8080';
+
+const BACKEND_PORT = (() => {
+  try {
+    const url = new URL(BACKEND_URL);
+    const port = Number(url.port);
+    return Number.isFinite(port) && port > 0 ? port : null;
+  } catch {
+    return null;
+  }
+})();
 
 // Trust the proxy (e.g. Nginx, Load Balancer) so rate limits use correct client IP
 app.set('trust proxy', 1);
@@ -63,11 +73,27 @@ app.use('*', (_req, res) => {
   res.status(404).json({ error: 'Gateway route not found' });
 });
 
-app.listen(PORT, () => {
-  console.log(`🛡️  API Gateway running on port ${PORT}`);
-  console.log(`↔️  Proxying to backend at ${BACKEND_URL}`);
-  console.log(`🌐 CORS allowed origin: ${FRONTEND_URL}`);
-});
+const startServer = (port: number, attemptsRemaining = 10) => {
+  const server = app.listen(port, () => {
+    console.log(`🛡️  API Gateway running on port ${port}`);
+    console.log(`↔️  Proxying to backend at ${BACKEND_URL}`);
+    console.log(`🌐 CORS allowed origin: ${FRONTEND_URL}`);
+  });
+
+  server.on('error', (err: any) => {
+    if (err?.code === 'EADDRINUSE' && attemptsRemaining > 0) {
+      server.close();
+      let nextPort = port + 1;
+      if (BACKEND_PORT && nextPort === BACKEND_PORT) nextPort += 1;
+      startServer(nextPort, attemptsRemaining - 1);
+      return;
+    }
+
+    throw err;
+  });
+};
+
+startServer(DESIRED_PORT);
 
 export default app;
 // Trigger restart again

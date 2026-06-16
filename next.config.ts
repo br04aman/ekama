@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV !== 'production';
+const cloudinaryCloudName = process.env.CLOUDINARY_CLOUD_NAME;
+const cloudinaryPathname = cloudinaryCloudName ? `/${cloudinaryCloudName}/**` : '/**';
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -15,6 +17,11 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'ekama.onrender.com',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: cloudinaryPathname,
       },
     ],
     localPatterns: [

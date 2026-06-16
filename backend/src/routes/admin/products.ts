@@ -1,14 +1,11 @@
 import type { Request } from 'express';
 import express from 'express';
-import fs from 'fs';
 import multer from 'multer';
-import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { authenticate, authorizeAdmin } from '../../middleware/auth';
 import { ApiResponse, AuthTokenPayload, Product } from '../../types';
+import { uploadMulterFile, deleteFromCloudinary, extractPublicId } from '../../utils/cloudinaryUpload';
 import { getCollectionsCollection, getProductsCollection } from '../../utils/database';
-import { getUploadsDir } from '../../utils/paths';
-import { optimizeImage } from '../../utils/image';
 
 const router = express.Router();
 
@@ -36,19 +33,10 @@ type ProductDoc = {
   updatedBy?: string;
 };
 
-const uploadsRoot = getUploadsDir();
-
+// Use memory storage since we're uploading to Cloudinary
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: (_req, _file, cb) => {
-      cb(null, uploadsRoot);
-    },
-    filename: (_req, file, cb) => {
-      const ext = path.extname(file.originalname);
-      cb(null, `${uuidv4()}${ext}`);
-    }
-  }),
-  limits: { fileSize: 10 * 1024 * 1024 }
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
 
 const parseTags = (value: unknown): string[] => {
@@ -128,11 +116,14 @@ router.post('/', authenticate, authorizeAdmin, upload.array('images', 5), async 
     } = req.body || {};
     const uploadedFiles = (req.files || []) as Express.Multer.File[];
 
-    // Optimize images
-    const optimizedFilenames = await Promise.all(
-      uploadedFiles.map(file => optimizeImage(file.path, uploadsRoot))
+    // Upload images to Cloudinary
+    const uploadResults = await Promise.all(
+      uploadedFiles.map(file => uploadMulterFile(file, {
+        folder: 'ekama/products',
+        resource_type: 'image'
+      }))
     );
-    const uploadedImages = optimizedFilenames.map((filename) => `/uploads/${filename}`);
+    const uploadedImages = uploadResults.map((result) => result.secure_url);
 
     if (!name || typeof price === 'undefined' || !collection) {
       return res.status(400).json({
@@ -219,10 +210,14 @@ router.patch('/:id', authenticate, authorizeAdmin, upload.array('images', 5), as
   } = req.body || {};
   const uploadedFiles = (req.files || []) as Express.Multer.File[];
 
-  const optimizedFilenames = await Promise.all(
-    uploadedFiles.map(file => optimizeImage(file.path, uploadsRoot))
+  // Upload images to Cloudinary
+  const uploadResults = await Promise.all(
+    uploadedFiles.map(file => uploadMulterFile(file, {
+      folder: 'ekama/products',
+      resource_type: 'image'
+    }))
   );
-  const uploadedImages = optimizedFilenames.map((filename) => `/uploads/${filename}`);
+  const uploadedImages = uploadResults.map((result) => result.secure_url);
 
   const updates: Partial<ProductDoc> = {};
   const unset: Record<string, ''> = {};
@@ -303,6 +298,24 @@ router.delete('/:id', authenticate, authorizeAdmin, async (req, res) => {
     const existing = await products.findOne({ id });
     if (!existing) {
       return res.status(404).json({ success: false, error: 'Product not found' });
+    }
+
+    // Delete images from Cloudinary
+    if (existing.images && Array.isArray(existing.images)) {
+      for (const imageUrl of existing.images) {
+        try {
+          if (imageUrl && imageUrl.includes('cloudinary.com')) {
+            const publicId = extractPublicId(imageUrl);
+            if (publicId) {
+              await deleteFromCloudinary(publicId);
+              console.log(`🗑️ Deleted from Cloudinary: ${publicId}`);
+            }
+          }
+        } catch (err) {
+          console.error(`Failed to delete image from Cloudinary:`, err);
+          // Continue with deletion even if Cloudinary delete fails
+        }
+      }
     }
 
     const result = await products.deleteOne({ id });
