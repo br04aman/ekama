@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
+// @ts-ignore - streamifier has no official type declarations
 import streamifier from 'streamifier';
 
 // Configure Cloudinary
@@ -97,7 +98,7 @@ export async function uploadFile(
  * This is the main function used in route handlers
  */
 export function uploadMulterFile(
-  file: Express.Multer.File,
+  file: any,
   options: UploadOptions = {}
 ): Promise<UploadResult> {
   // Determine resource type based on mimetype

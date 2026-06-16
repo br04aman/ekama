@@ -7,11 +7,20 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 
-// Load environment variables from root .env
-const rootEnvPath = path.resolve(__dirname, '../../../../.env');
-dotenv.config({ path: rootEnvPath });
+// Load environment variables (same logic as preloadEnv.ts)
+const envPathsToTry = [
+  path.resolve(__dirname, '../../.env'),
+  path.resolve(__dirname, '../../../.env'),
+  path.resolve(process.cwd(), '../.env'),
+  path.resolve(process.cwd(), '.env'),
+];
 
-import { uploadFile } from '../utils/cloudinary';
+for (const envPath of envPathsToTry) {
+  const result = dotenv.config({ path: envPath });
+  if (!result.error) break;
+}
+
+import { uploadFile } from '../utils/cloudinaryUpload';
 import { getCollectionsCollection, getProductsCollection, initDatabase } from '../utils/database';
 
 const uploadsDir = path.resolve(__dirname, '../../public/uploads');

@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
+// @ts-ignore - streamifier has no official type declarations
 import streamifier from 'streamifier';
 
 // Configure Cloudinary
@@ -88,7 +89,7 @@ export async function uploadFile(
  * Upload a Multer file to Cloudinary
  */
 export function uploadMulterFile(
-  file: Express.Multer.File,
+  file: any,
   options: CloudinaryUploadOptions = {}
 ): Promise<CloudinaryUploadResult> {
   return uploadBuffer(file.buffer, {

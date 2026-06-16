@@ -1,38 +1,18 @@
 import express from 'express';
 import multer from 'multer';
-import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 import { authenticate, authorizeAdmin } from '../middleware/auth';
 import { getStoreSettingsCollection } from '../utils/database';
-import { getUploadsDir } from '../utils/paths';
 
 const router = express.Router();
 
-const uploadsRoot = getUploadsDir();
-
+// Use memory storage for Cloudinary uploads
 const upload = multer({
-    storage: multer.diskStorage({
-        destination: (_req, _file, cb) => {
-            cb(null, uploadsRoot);
-        },
-        filename: (_req, file, cb) => {
-            const ext = path.extname(file.originalname);
-            cb(null, `${uuidv4()}${ext}`);
-        }
-    }),
-    limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit (increased for Cloudinary)
 });
 
 const uploadVideo = multer({
-    storage: multer.diskStorage({
-        destination: (_req, _file, cb) => {
-            cb(null, uploadsRoot);
-        },
-        filename: (_req, file, cb) => {
-            const ext = path.extname(file.originalname);
-            cb(null, `${uuidv4()}${ext}`);
-        }
-    }),
+    storage: multer.memoryStorage(),
     limits: { fileSize: 50 * 1024 * 1024 } // 50MB limit for videos
 });
 
@@ -59,7 +39,16 @@ router.get('/:id', async (req, res) => {
 router.post('/upload', authenticate, authorizeAdmin, upload.array('images', 5), async (req, res) => {
     try {
         const uploadedFiles = (req.files || []) as Express.Multer.File[];
-        const imageUrls = uploadedFiles.map((file) => `/uploads/${file.filename}`);
+        
+        // Upload all files to Cloudinary
+        const uploadResults = await Promise.all(
+            uploadedFiles.map(file => uploadMulterFile(file, {
+                folder: 'ekama/settings',
+                resource_type: 'image'
+            }))
+        );
+        
+        const imageUrls = uploadResults.map(result => result.secure_url);
         res.status(200).json({ urls: imageUrls });
         return;
     } catch (error) {
@@ -73,14 +62,20 @@ router.post('/upload', authenticate, authorizeAdmin, upload.array('images', 5), 
 });
 
 // Admin ONLY route to handle video uploads for settings
-router.post('/upload/video', authenticate, authorizeAdmin, uploadVideo.single('video'), (req, res) => {
+router.post('/upload/video', authenticate, authorizeAdmin, uploadVideo.single('video'), async (req, res) => {
     try {
         if (!req.file) {
             res.status(400).json({ error: 'No video file provided' });
             return;
         }
-        const videoUrl = `/uploads/${req.file.filename}`;
-        res.status(200).json({ url: videoUrl });
+        
+        // Upload video to Cloudinary
+        const uploadResult = await uploadMulterFile(req.file, {
+            folder: 'ekama/settings',
+            resource_type: 'video'
+        });
+        
+        res.status(200).json({ url: uploadResult.secure_url });
         return;
     } catch (error) {
         console.error('Failed to upload video:', error);
