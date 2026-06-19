@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'; // Force dynamic rendering, no static caching
+
 import Categories from "@/components/Categories";
 import Collections from "@/components/Collections";
 import Features from "@/components/Features";
@@ -46,7 +48,7 @@ type StoreSettingsDoc = {
 async function getSettings(): Promise<StoreSettingsDoc | null> {
   try {
     const res = await apiFetch("/api/settings/home_page_layout", {
-      next: { revalidate: 3600 }
+      cache: 'no-store'
     });
     return res as StoreSettingsDoc;
   } catch (error) {
@@ -60,13 +62,13 @@ async function getInitialData(settings: StoreSettingsDoc | null) {
   const newArrivalsProductIds = settings?.newArrivalsProductIds || [];
   
   const [collectionsRes, trendingRes, newArrivalsRes] = await Promise.all([
-    apiFetch('/api/collections?limit=100', { next: { revalidate: 3600 } }),
+    apiFetch('/api/collections?limit=100', { cache: 'no-store' }),
     trendingProductIds.length > 0 
-      ? apiFetch(`/api/products?ids=${trendingProductIds.join(',')}&limit=${trendingProductIds.length}`, { next: { revalidate: 3600 } })
-      : apiFetch("/api/products?limit=6&sortBy=rating&sortOrder=DESC", { next: { revalidate: 3600 } }),
+      ? apiFetch(`/api/products?ids=${trendingProductIds.join(',')}&limit=${trendingProductIds.length}`, { cache: 'no-store' })
+      : apiFetch("/api/products?limit=6&sortBy=rating&sortOrder=DESC", { cache: 'no-store' }),
     newArrivalsProductIds.length > 0
-      ? apiFetch(`/api/products?ids=${newArrivalsProductIds.join(',')}&limit=${newArrivalsProductIds.length}`, { next: { revalidate: 3600 } })
-      : apiFetch("/api/products?limit=6&sortBy=createdAt&sortOrder=DESC", { next: { revalidate: 3600 } })
+      ? apiFetch(`/api/products?ids=${newArrivalsProductIds.join(',')}&limit=${newArrivalsProductIds.length}`, { cache: 'no-store' })
+      : apiFetch("/api/products?limit=6&sortBy=createdAt&sortOrder=DESC", { cache: 'no-store' })
   ]);
 
   return {

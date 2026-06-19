@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'; // Force dynamic rendering
+
 import { Metadata } from "next";
 import { apiFetch, BASE_URL } from "@/lib/api";
 import ProductDetailsClient from "./ProductDetailsClient";
@@ -20,7 +22,7 @@ type Product = {
 
 async function getProduct(id: string): Promise<Product | null> {
   try {
-    const res = await apiFetch(`/api/products/${id}`) as { data: Product };
+    const res = await apiFetch(`/api/products/${id}`, { cache: 'no-store' }) as { data: Product };
     return res.data;
   } catch (error) {
     console.error("Failed to fetch product:", error);

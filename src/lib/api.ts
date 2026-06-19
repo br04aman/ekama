@@ -50,6 +50,7 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
   }
 
   const res = await fetch(`${BASE_URL}${path}`, {
+    cache: 'no-store', // Disable caching by default to always get fresh data
     ...options,
     headers: {
       ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
@@ -67,3 +68,4 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
 }
 
 export { BASE_URL };
+
