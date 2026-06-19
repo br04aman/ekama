@@ -4,7 +4,7 @@ import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { authenticate, authorizeAdmin } from '../../middleware/auth';
 import { ApiResponse, AuthTokenPayload, Product } from '../../types';
-import { uploadMulterFile, deleteFromCloudinary, extractPublicId } from '../../utils/cloudinaryUpload';
+import { deleteFromCloudinary, extractPublicId, uploadMulterFile } from '../../utils/cloudinaryUpload';
 import { getCollectionsCollection, getProductsCollection } from '../../utils/database';
 
 const router = express.Router();
@@ -210,14 +210,23 @@ router.patch('/:id', authenticate, authorizeAdmin, upload.array('images', 5), as
   } = req.body || {};
   const uploadedFiles = (req.files || []) as Express.Multer.File[];
 
-  // Upload images to Cloudinary
-  const uploadResults = await Promise.all(
-    uploadedFiles.map(file => uploadMulterFile(file, {
-      folder: 'ekama/products',
-      resource_type: 'image'
-    }))
-  );
-  const uploadedImages = uploadResults.map((result) => result.secure_url);
+  // First get the existing product to keep existing images if needed
+  const existingProduct = await products.findOne({ id });
+  if (!existingProduct) {
+    return res.status(404).json({ success: false, error: 'Product not found' });
+  }
+
+  // Upload new images to Cloudinary if any
+  let uploadedImages: string[] = [];
+  if (uploadedFiles.length > 0) {
+    const uploadResults = await Promise.all(
+      uploadedFiles.map(file => uploadMulterFile(file, {
+        folder: 'ekama/products',
+        resource_type: 'image'
+      }))
+    );
+    uploadedImages = uploadResults.map((result) => result.secure_url);
+  }
 
   const updates: Partial<ProductDoc> = {};
   const unset: Record<string, ''> = {};
@@ -247,6 +256,8 @@ router.patch('/:id', authenticate, authorizeAdmin, upload.array('images', 5), as
     updates.siddhAvailable = typeof siddhAvailable === 'string' ? siddhAvailable === 'true' : Boolean(siddhAvailable);
   }
   if (typeof specifications !== 'undefined') updates.specifications = parseSpecifications(specifications);
+
+  // Handle images properly: if we uploaded new ones, use them; else keep existing
   if (uploadedImages.length > 0) {
     updates.images = uploadedImages;
   } else if (typeof images !== 'undefined') {
@@ -256,6 +267,7 @@ router.patch('/:id', authenticate, authorizeAdmin, upload.array('images', 5), as
   } else if (typeof existingImages !== 'undefined') {
     updates.images = parseImageList(existingImages);
   }
+  // If no new images provided, don't change images field (keep existing)
 
   if (Object.keys(updates).length === 0 && Object.keys(unset).length === 0) {
     return res.status(400).json({ success: false, error: 'No updatable fields provided' } as ApiResponse<null>);

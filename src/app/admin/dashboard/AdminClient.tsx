@@ -601,6 +601,26 @@ const AdminClient = () => {
                         </div>
                       </div>
                       
+                      <div className="grid md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Admin Product ID</label>
+                          <Input {...register('adminProductId')} className="h-12 rounded-xl" placeholder="Optional custom ID" />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">In Stock</label>
+                          <div className="flex items-center gap-4">
+                            <label className="flex items-center gap-2">
+                              <input 
+                                type="checkbox" 
+                                {...register('inStock')} 
+                                className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
+                              />
+                              <span className="text-sm">Yes</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
                       <div className="space-y-2">
                         <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Description</label>
                         <textarea {...register('description')} className="w-full min-h-[120px] bg-slate-50 border border-slate-100 rounded-xl p-4 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" />
@@ -621,16 +641,42 @@ const AdminClient = () => {
                         </div>
                       </div>
 
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Tags (comma separated)</label>
+                        <Input {...register('tags')} className="h-12 rounded-xl" placeholder="spiritual, mala, rudraksha" />
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Specifications (one per line, key:value)</label>
+                        <textarea 
+                          {...register('specifications')} 
+                          className="w-full min-h-[100px] bg-slate-50 border border-slate-100 rounded-xl p-4 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                          placeholder="material: Rudraksha&#10;beads: 108"
+                        />
+                      </div>
+
                       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                        {[1, 2, 3, 4, 5].map(i => (
-                          <div key={i} className="space-y-2">
-                            <label className="text-[10px] font-bold text-slate-400 uppercase">Image {i}</label>
-                            <div className="relative group aspect-square rounded-xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden hover:border-orange-500 transition-all">
-                              <Plus className="h-6 w-6 text-slate-300 group-hover:text-orange-500" />
-                              <input type="file" {...register(`imageFile${i}` as any)} className="absolute inset-0 opacity-0 cursor-pointer" />
+                        {[1, 2, 3, 4, 5].map(i => {
+                          const editingProduct = products.find(p => p.id === editingProductId);
+                          const existingImage = editingProduct?.images?.[i - 1];
+                          return (
+                            <div key={i} className="space-y-2">
+                              <label className="text-[10px] font-bold text-slate-400 uppercase">Image {i}</label>
+                              <div className="relative group aspect-square rounded-xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden hover:border-orange-500 transition-all">
+                                {existingImage ? (
+                                  <img 
+                                    src={getImageUrl(existingImage)} 
+                                    alt={`Product image ${i}`} 
+                                    className="w-full h-full object-cover" 
+                                  />
+                                ) : (
+                                  <Plus className="h-6 w-6 text-slate-300 group-hover:text-orange-500" />
+                                )}
+                                <input type="file" {...register(`imageFile${i}` as any)} className="absolute inset-0 opacity-0 cursor-pointer" />
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
 
                       <div className="flex gap-4 pt-4">
@@ -683,14 +729,20 @@ const AdminClient = () => {
                                 <Button variant="ghost" size="icon" className="text-slate-400 hover:text-orange-600" onClick={() => {
                                   setEditingProductId(p.id);
                                   setShowAddProduct(true);
-                                  // Populate form (simplified)
+                                  // Populate form fully
                                   reset({
                                     name: p.name,
                                     price: p.price,
+                                    originalPrice: p.originalPrice,
                                     collection: p.collection,
                                     inStock: p.inStock,
                                     stockQuantity: p.stockQuantity,
-                                    adminProductId: p.adminProductId
+                                    adminProductId: p.adminProductId,
+                                    description: p.description,
+                                    tags: p.tags ? p.tags.join(', ') : '',
+                                    specifications: p.specifications 
+                                      ? Object.entries(p.specifications).map(([k, v]) => `${k}:${v}`).join('\n') 
+                                      : ''
                                   } as any);
                                 }}><Edit2 className="h-4 w-4" /></Button>
                                 <Button variant="ghost" size="icon" className="text-slate-400 hover:text-red-600" onClick={() => handleDeleteProduct(p.id)}><Trash2 className="h-4 w-4" /></Button>
