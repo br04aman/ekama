@@ -136,6 +136,17 @@ const AdminClient = () => {
   const [addingProduct, setAddingProduct] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<AdminOrder | null>(null);
   const [selectedCollection, setSelectedCollection] = useState('all');
+  // New collection state
+  const [showAddCollection, setShowAddCollection] = useState(false);
+  const [editingCollectionId, setEditingCollectionId] = useState<string | null>(null);
+  const [addingCollection, setAddingCollection] = useState(false);
+  const [collectionForm, setCollectionForm] = useState({
+    name: '',
+    slug: '',
+    description: '',
+    existingImage: '',
+    imageFile: null as File | null
+  });
 
   const { register, handleSubmit, reset, watch, setValue } = useForm<ProductFormValues>();
 
@@ -219,6 +230,66 @@ const AdminClient = () => {
       });
       toast({ title: 'Success', description: 'Product deleted successfully.' });
       fetchProducts();
+    } catch (e) {
+      toast({ title: 'Error', description: String(e), variant: 'destructive' });
+    }
+  };
+
+  // Collection handlers
+  const toUrlKey = (str: string) => {
+    return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  };
+
+  const handleSaveCollection = async (keepEditing: boolean) => {
+    if (!collectionForm.name.trim()) {
+      toast({ title: 'Error', description: 'Please enter a collection name.', variant: 'destructive' });
+      return;
+    }
+    setAddingCollection(true);
+    try {
+      const formData = new FormData();
+      formData.append('name', collectionForm.name);
+      formData.append('description', collectionForm.description);
+      formData.append('slug', collectionForm.slug || toUrlKey(collectionForm.name));
+      if (collectionForm.imageFile) {
+        formData.append('image', collectionForm.imageFile);
+      }
+
+      const endpoint = editingCollectionId ? `/api/admin/collections/${editingCollectionId}` : '/api/admin/collections';
+      const method = editingCollectionId ? 'PATCH' : 'POST';
+
+      const res = await apiFetch(endpoint, {
+        method,
+        body: formData,
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      toast({ title: 'Success', description: `Collection ${editingCollectionId ? 'updated' : 'created'} successfully.` });
+      
+      if (!keepEditing) {
+        setShowAddCollection(false);
+        setEditingCollectionId(null);
+        setCollectionForm({ name: '', slug: '', description: '', existingImage: '', imageFile: null });
+      }
+      
+      fetchCollections(); // Refresh the list
+    } catch (e) {
+      toast({ title: 'Error', description: String(e), variant: 'destructive' });
+    } finally {
+      setAddingCollection(false);
+    }
+  };
+
+  const handleDeleteCollection = async (id: string, name: string) => {
+    const confirmed = window.confirm(`Delete collection "${name}"? This action cannot be undone!`);
+    if (!confirmed) return;
+    try {
+      await apiFetch(`/api/admin/collections/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast({ title: 'Success', description: 'Collection deleted successfully.' });
+      fetchCollections();
     } catch (e) {
       toast({ title: 'Error', description: String(e), variant: 'destructive' });
     }
@@ -639,10 +710,105 @@ const AdminClient = () => {
              <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-bold text-slate-900">Store Collections</h2>
-                  <Button className="bg-orange-600 hover:bg-orange-700 h-12 rounded-xl px-6 font-bold gap-2">
+                  <Button onClick={() => {
+                    setShowAddCollection(true);
+                    setEditingCollectionId(null);
+                    setCollectionForm({ name: '', slug: '', description: '', existingImage: '', imageFile: null });
+                  }} className="bg-orange-600 hover:bg-orange-700 h-12 rounded-xl px-6 font-bold gap-2">
                     <Plus className="h-4 w-4" /> Create Collection
                   </Button>
                 </div>
+
+                {/* Add/Edit Collection Form */}
+                {showAddCollection && (
+                  <Card className="border-none shadow-md overflow-hidden rounded-2xl bg-white mb-8">
+                    <div className="bg-slate-900 px-6 py-4 flex items-center justify-between">
+                      <h2 className="text-white font-bold">{editingCollectionId ? 'Edit Collection' : 'New Collection'}</h2>
+                      <Button variant="ghost" onClick={() => setShowAddCollection(false)} className="text-white hover:bg-white/10"><X className="h-5 w-5" /></Button>
+                    </div>
+                    <CardContent className="p-8">
+                      <div className="space-y-6">
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div className="space-y-2">
+                            <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Collection Name</label>
+                            <Input 
+                              value={collectionForm.name}
+                              onChange={(e) => setCollectionForm({...collectionForm, name: e.target.value, slug: toUrlKey(e.target.value)})}
+                              className="h-12 rounded-xl"
+                              placeholder="Enter collection name"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">URL Slug</label>
+                            <Input 
+                              value={collectionForm.slug}
+                              onChange={(e) => setCollectionForm({...collectionForm, slug: e.target.value})}
+                              className="h-12 rounded-xl"
+                              placeholder="url-friendly-slug"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Description</label>
+                          <textarea 
+                            value={collectionForm.description}
+                            onChange={(e) => setCollectionForm({...collectionForm, description: e.target.value})}
+                            className="w-full min-h-[100px] bg-slate-50 border border-slate-100 rounded-xl p-4 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                            placeholder="Enter a short description..."
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Collection Image</label>
+                          <div className="relative group aspect-video rounded-xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center overflow-hidden hover:border-orange-500 transition-all">
+                            {(collectionForm.existingImage || collectionForm.imageFile) ? (
+                              <img 
+                                src={collectionForm.imageFile ? URL.createObjectURL(collectionForm.imageFile) : getImageUrl(collectionForm.existingImage)} 
+                                className="w-full h-full object-cover" 
+                                alt="Preview" 
+                              />
+                            ) : (
+                              <div className="flex flex-col items-center">
+                                <Plus className="h-8 w-8 text-slate-300 mb-2" />
+                                <p className="text-slate-400 text-sm">Click to upload image</p>
+                              </div>
+                            )}
+                            <input 
+                              type="file" 
+                              accept="image/*" 
+                              className="absolute inset-0 opacity-0 cursor-pointer" 
+                              onChange={(e) => {
+                                if (e.target.files && e.target.files[0]) {
+                                  setCollectionForm({...collectionForm, imageFile: e.target.files[0]});
+                                }
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex gap-4 pt-4">
+                          <Button 
+                            onClick={() => handleSaveCollection(false)} 
+                            disabled={addingCollection} 
+                            className="flex-1 bg-orange-600 hover:bg-orange-700 h-14 rounded-2xl font-bold shadow-lg shadow-orange-100"
+                          >
+                            {addingCollection ? 'SAVING...' : (editingCollectionId ? 'UPDATE COLLECTION' : 'CREATE COLLECTION')}
+                          </Button>
+                          <Button 
+                            type="button" 
+                            variant="outline" 
+                            onClick={() => setShowAddCollection(false)} 
+                            className="h-14 px-8 rounded-2xl font-bold border-2"
+                          >
+                            CANCEL
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {collections.map(c => (
                     <Card key={c.id} className="border-none shadow-sm rounded-2xl overflow-hidden bg-white group">
@@ -656,8 +822,32 @@ const AdminClient = () => {
                       </div>
                       <CardContent className="p-4 flex justify-between items-center">
                         <div className="flex gap-1">
-                           <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg text-slate-400 hover:text-orange-600"><Edit2 className="h-4 w-4" /></Button>
-                           <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg text-slate-400 hover:text-red-600"><Trash2 className="h-4 w-4" /></Button>
+                           <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="h-9 w-9 rounded-lg text-slate-400 hover:text-orange-600"
+                            onClick={() => {
+                              setEditingCollectionId(c.id);
+                              setShowAddCollection(true);
+                              setCollectionForm({
+                                name: c.name,
+                                slug: c.slug || toUrlKey(c.name),
+                                description: (c as any).description || '',
+                                existingImage: c.image || '',
+                                imageFile: null
+                              });
+                            }}
+                          >
+                            <Edit2 className="h-4 w-4" />
+                          </Button>
+                           <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="h-9 w-9 rounded-lg text-slate-400 hover:text-red-600"
+                            onClick={() => handleDeleteCollection(c.id, c.name)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
                         <Link href={`/collections/${c.id}`} className="text-xs font-bold text-slate-400 hover:text-slate-900 flex items-center gap-1">
                           VIEW STORE <ExternalLink className="h-3 w-3" />

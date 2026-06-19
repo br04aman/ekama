@@ -4,7 +4,7 @@ import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { authenticate, authorizeAdmin } from '../../middleware/auth';
 import { ApiResponse, AuthTokenPayload, Collection } from '../../types';
-import { uploadMulterFile, deleteFromCloudinary, extractPublicId } from '../../utils/cloudinaryUpload';
+import { deleteFromCloudinary, extractPublicId, uploadMulterFile } from '../../utils/cloudinaryUpload';
 import { getCollectionsCollection, getProductsCollection } from '../../utils/database';
 
 const router = express.Router();
@@ -51,20 +51,34 @@ type CollectionDoc = {
   updatedBy?: string;
 };
 
-router.post('/', authenticate, authorizeAdmin, async (req, res) => {
+router.post('/', authenticate, authorizeAdmin, upload.single('image'), async (req, res) => {
   const collections = getCollectionsCollection();
-  const { name, description, image, category, featured, slug } = req.body;
+  const { name, description, category, featured, slug } = req.body;
   const user = (req as AuthenticatedRequest).user;
   const now = new Date();
+
+  let imageUrl = '';
+  if (req.file) {
+    try {
+      const uploadResult = await uploadMulterFile(req.file, {
+        folder: 'ekama/collections',
+        resource_type: 'image'
+      });
+      imageUrl = uploadResult.secure_url;
+    } catch (error) {
+      console.error('Failed to upload collection image:', error);
+      return res.status(500).json({ success: false, error: 'Failed to upload image' });
+    }
+  }
 
   const newCollection: CollectionDoc = {
     id: uuidv4(),
     name,
     description,
-    image,
-    category,
+    image: imageUrl,
+    category: category || name,
     featured: Boolean(featured),
-    slug: slug || name.toLowerCase().replace(/ /g, '-'),
+    slug: slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
     productCount: 0,
     createdAt: now,
     updatedAt: now,
@@ -87,31 +101,52 @@ router.post('/', authenticate, authorizeAdmin, async (req, res) => {
   }
 });
 
-router.patch('/:id', authenticate, authorizeAdmin, async (req, res) => {
+router.patch('/:id', authenticate, authorizeAdmin, upload.single('image'), async (req, res) => {
   const collections = getCollectionsCollection();
   const { id } = req.params;
-  const { name, description, image, category, featured, slug } = req.body;
+  const { name, description, category, featured, slug } = req.body;
   const user = (req as AuthenticatedRequest).user;
   const now = new Date();
 
-  const updateData: Partial<CollectionDoc> = {
-    name,
-    description,
-    image,
-    category,
-    featured: featured,
-    slug: slug,
-    updatedAt: now,
-    updatedBy: user.email
-  };
-
-  Object.keys(updateData).forEach(key => updateData[key as keyof typeof updateData] === undefined && delete updateData[key as keyof typeof updateData]);
-
   try {
-    const result = await collections.updateOne({ id }, { $set: updateData });
-    if (result.matchedCount === 0) {
+    const existingCollection = await collections.findOne({ id });
+    if (!existingCollection) {
       return res.status(404).json({ success: false, error: 'Collection not found' });
     }
+
+    let imageUrl = existingCollection.image;
+    if (req.file) {
+      // Delete old image from Cloudinary if exists
+      if (existingCollection.image && existingCollection.image.includes('cloudinary.com')) {
+        try {
+          const publicId = extractPublicId(existingCollection.image);
+          if (publicId) {
+            await deleteFromCloudinary(publicId);
+          }
+        } catch (err) {
+          console.error('Failed to delete old collection image:', err);
+        }
+      }
+      // Upload new image
+      const uploadResult = await uploadMulterFile(req.file, {
+        folder: 'ekama/collections',
+        resource_type: 'image'
+      });
+      imageUrl = uploadResult.secure_url;
+    }
+
+    const updateData: Partial<CollectionDoc> = {
+      name: name ?? existingCollection.name,
+      description: description ?? existingCollection.description,
+      image: imageUrl,
+      category: category ?? existingCollection.category,
+      featured: featured !== undefined ? Boolean(featured) : existingCollection.featured,
+      slug: slug ?? existingCollection.slug,
+      updatedAt: now,
+      updatedBy: user.email
+    };
+
+    await collections.updateOne({ id }, { $set: updateData });
     const updatedCollection = await collections.findOne({ id });
     return res.json({
       success: true,
