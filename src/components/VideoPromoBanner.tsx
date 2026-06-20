@@ -12,7 +12,12 @@ interface VideoPromoBannerProps {
 const VideoPromoBanner: React.FC<VideoPromoBannerProps> = ({ title, videoUrls }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isMuted, setIsMuted] = useState(true);
+    const [isMounted, setIsMounted] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     // Reset index if the array changes
     useEffect(() => {
@@ -69,15 +74,20 @@ const VideoPromoBanner: React.FC<VideoPromoBannerProps> = ({ title, videoUrls })
 
                 {/* Mute Toggle Button */}
                 <button
+                    suppressHydrationWarning
                     onClick={() => setIsMuted(!isMuted)}
                     className="absolute top-2 right-4 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full backdrop-blur-sm transition-all shadow-md z-10 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white border border-white/20"
-                    aria-label={isMuted ? "Unmute video" : "Mute video"}
-                    title={isMuted ? "Unmute" : "Mute"}
+                    aria-label={isMounted ? (isMuted ? "Unmute video" : "Mute video") : "Mute video"}
+                    title={isMounted ? (isMuted ? "Unmute" : "Mute") : "Mute"}
                 >
-                    {isMuted ? (
-                        <VolumeX className="w-4 h-4 drop-shadow-sm" />
+                    {isMounted ? (
+                        isMuted ? (
+                            <VolumeX className="w-4 h-4 drop-shadow-sm" />
+                        ) : (
+                            <Volume2 className="w-4 h-4 drop-shadow-sm" />
+                        )
                     ) : (
-                        <Volume2 className="w-4 h-4 drop-shadow-sm" />
+                        <VolumeX className="w-4 h-4 drop-shadow-sm" />
                     )}
                 </button>
             </div>

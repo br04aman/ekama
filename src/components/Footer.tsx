@@ -16,13 +16,13 @@ const Footer = () => {
               Your trusted source for authentic spiritual products and energy stones.
             </p>
             <div className="flex gap-2">
-              <Button variant="ghost" size="icon" className="hover:text-primary">
+              <Button variant="ghost" size="icon" className="hover:text-primary" suppressHydrationWarning>
                 <Facebook className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="icon" className="hover:text-primary">
+              <Button variant="ghost" size="icon" className="hover:text-primary" suppressHydrationWarning>
                 <Instagram className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="icon" className="hover:text-primary">
+              <Button variant="ghost" size="icon" className="hover:text-primary" suppressHydrationWarning>
                 <Twitter className="h-5 w-5" />
               </Button>
             </div>
@@ -93,8 +93,9 @@ const Footer = () => {
                 type="email"
                 placeholder="Your email"
                 className="flex-1"
+                suppressHydrationWarning
               />
-              <Button size="icon">
+              <Button size="icon" suppressHydrationWarning>
                 <Mail className="h-4 w-4" />
               </Button>
             </div>

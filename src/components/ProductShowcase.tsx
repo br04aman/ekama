@@ -86,7 +86,12 @@ const ProductShowcase = ({
     initialNewArrivals ? mapProducts(initialNewArrivals) : products.slice(3, 6)
   );
   const [isLoading, setIsLoading] = useState(!initialTrending || !initialNewArrivals);
+  const [isMounted, setIsMounted] = useState(false);
   const { toggleWishlist, isInWishlist } = useWishlist();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (initialTrending && initialNewArrivals) return;
@@ -136,7 +141,7 @@ const ProductShowcase = ({
       <div className="flex items-center justify-between px-4 mb-4">
         <h2 className="text-xl font-bold text-slate-900">{title}</h2>
         <Link href={title.toLowerCase().includes("trending") ? "/trending" : "/new-arrivals"}>
-          <Button variant="link" className="text-orange-600 font-semibold p-0 h-auto">
+          <Button variant="link" className="text-orange-600 font-semibold p-0 h-auto" suppressHydrationWarning>
             View All
           </Button>
         </Link>
@@ -170,6 +175,7 @@ const ProductShowcase = ({
                   sizes="(max-width: 768px) 140px, 140px"
                 />
                 <button
+                  suppressHydrationWarning
                   className="absolute top-1.5 right-1.5 p-1 bg-white/90 rounded-full text-orange-600 shadow-sm"
                   onClick={(e) => {
                     e.preventDefault();
@@ -177,7 +183,9 @@ const ProductShowcase = ({
                     toggleWishlist(String(product.id));
                   }}
                 >
-                  <Heart className={`h-3 w-3 ${isInWishlist(String(product.id)) ? "fill-orange-600" : ""}`} />
+                  <Heart 
+                    className={`h-3 w-3 ${isMounted && isInWishlist(String(product.id)) ? "fill-orange-600" : ""}`} 
+                  />
                 </button>
               </div>
 
