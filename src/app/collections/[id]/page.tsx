@@ -8,6 +8,7 @@ import { apiFetch, getImageUrl } from "@/lib/api";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { use, useEffect, useState } from "react";
+import { ArrowLeft } from "lucide-react";
 
 interface Product {
   id: string;
@@ -116,6 +117,10 @@ export default function CollectionPage({ params }: { params: Promise<{ id: strin
       <Header />
       <main className="max-w-[1100px] mx-auto px-4 py-8">
         <div className="mb-8">
+          <Link href="/" className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-800 font-medium mb-4">
+            <ArrowLeft className="w-5 h-5" />
+            Back to Home
+          </Link>
           <h1 className="text-3xl font-bold text-orange-900 mb-2">{title}</h1>
           <div className="h-1 w-20 bg-gradient-to-r from-orange-500 to-red-500 rounded-full" />
         </div>
