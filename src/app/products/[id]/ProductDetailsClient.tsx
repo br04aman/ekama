@@ -2,12 +2,12 @@
 
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useCart } from "@/hooks/use-cart";
 import { useToast } from "@/hooks/use-toast";
 import { useWishlist } from "@/hooks/use-wishlist";
-import { Skeleton } from "@/components/ui/skeleton";
 import { apiFetch, BASE_URL } from "@/lib/api";
-import { ChevronLeft, ChevronRight, Heart, RotateCcw, ShieldCheck, ShoppingCart, Star, Truck } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Heart, RotateCcw, ShieldCheck, ShoppingCart, Star, Truck } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -173,6 +173,9 @@ export default function ProductDetailsClient({ id }: { id: string }) {
     <div className="min-h-screen bg-white pb-20 md:pb-0">
       <Header />
       <main className="max-w-[1100px] mx-auto px-4 py-4 md:py-8">
+        <Link href="/" className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-800 font-medium mb-4">
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-2 text-[10px] md:text-xs text-slate-500 mb-4 md:mb-6 overflow-x-auto whitespace-nowrap pb-2 scrollbar-hide">
           <Link href="/" className="hover:text-orange-600">Home</Link>
