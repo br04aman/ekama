@@ -88,7 +88,6 @@ export default function ProfilePage() {
         {/* Profile Header Card */}
         <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-100 mb-8 flex flex-col md:flex-row items-center gap-6">
           <Avatar className="h-20 w-20 ring-4 ring-orange-50">
-            <AvatarImage src="/images/avatar-placeholder.png" alt="User" />
             <AvatarFallback className="text-xl bg-orange-100 text-orange-700 font-bold">
               {user?.firstName?.charAt(0)}
             </AvatarFallback>

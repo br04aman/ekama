@@ -13,6 +13,17 @@ if (IS_PROD && isBrowser) {
   console.log(`[API] Using Base URL: ${BASE_URL}`);
 }
 
+// Helper to clear invalid auth
+const clearInvalidAuth = () => {
+  if (isBrowser) {
+    try {
+      localStorage.removeItem("ekama-auth-v1");
+    } catch (e) {
+      console.error('[apiFetch] Error clearing auth:', e);
+    }
+  }
+};
+
 export function getImageUrl(imagePath?: string): string {
   if (!imagePath) return '';
   if (imagePath.startsWith('data:') || imagePath.startsWith('http')) return imagePath;
@@ -59,7 +70,20 @@ export async function apiFetch(path: string, options: RequestInit = {}) {
     },
   });
   
-  const data = await res.json().catch(() => ({}));
+  let data: any = {};
+  try {
+    data = await res.json();
+  } catch (e) {
+    data = {};
+  }
+  
+  // Handle 403 Invalid/Expired token
+  if (res.status === 403 && isBrowser) {
+    clearInvalidAuth();
+    // Reload to reset auth state
+    window.location.reload();
+  }
+  
   if (!res.ok) {
     const errorMsg = data?.message || data?.error || `Request failed: ${res.status}`;
     throw new Error(errorMsg);

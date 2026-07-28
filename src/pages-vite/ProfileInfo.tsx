@@ -30,7 +30,6 @@ const ProfileInfo = () => {
                         <CardContent className="p-8 space-y-8">
                             <div className="flex flex-col items-center gap-4 pb-4 border-b border-slate-100">
                                 <Avatar className="h-24 w-24 ring-4 ring-orange-50">
-                                    <AvatarImage src="/images/avatar-placeholder.png" alt="User" />
                                     <AvatarFallback className="text-2xl bg-orange-100 text-orange-700 font-bold">
                                         {user?.firstName?.charAt(0)}
                                     </AvatarFallback>
