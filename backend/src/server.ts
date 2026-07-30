@@ -45,13 +45,17 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
 
-// CORS configuration — allow any localhost origin in dev so Vite (5173 / 8080 / etc.) works
+// CORS configuration — allow frontend origins including custom domain ekmaa.in and Vercel deployments
+const extraOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'https://ekama-one.vercel.app',
   'https://ekama-one.vercel.app',
+  'https://ekmaa.in',
+  'https://www.ekmaa.in',
   'http://localhost:5173',
   'http://localhost:3000',
   'http://localhost:8080',
+  ...extraOrigins
 ];
 app.use(cors({
   origin: (origin, callback) => {
@@ -59,6 +63,11 @@ app.use(cors({
     if (!origin) return callback(null, true);
     // Allow any localhost / 127.0.0.1 / local IPs in development
     if (process.env.NODE_ENV !== 'production' && /^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+)(:\d+)?$/.test(origin)) {
+      return callback(null, true);
+    }
+
+    // Allow ekmaa.in, www.ekmaa.in, and any *.vercel.app domain
+    if (/^https:\/\/(.*\.)?ekmaa\.in$/.test(origin) || /^https:\/\/(.*\.)?vercel\.app$/.test(origin)) {
       return callback(null, true);
     }
 
@@ -70,6 +79,7 @@ app.use(cors({
     });
 
     if (isAllowed) return callback(null, true);
+    console.error(`[CORS] Blocked origin: ${origin}`);
     callback(new Error(`CORS blocked: ${origin}`));
   },
   credentials: true,
