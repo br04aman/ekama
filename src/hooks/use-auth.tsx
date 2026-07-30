@@ -16,12 +16,25 @@ interface AuthState {
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
   signup: (data: { email: string; password: string; firstName: string; lastName?: string; phone: string }) => Promise<void>;
+  updateUser: (nextUser: User) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthState | null>(null);
 
 const STORAGE_KEY = "ekama-auth-v1";
+
+const persistAuth = (user: User | null, token: string | null) => {
+  try {
+    if (user && token) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ user, token }));
+      return;
+    }
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    void 0;
+  }
+};
 
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -41,6 +54,11 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     }
   }, []);
 
+  const updateUser = useCallback((nextUser: User) => {
+    setUser(nextUser);
+    persistAuth(nextUser, token);
+  }, [token]);
+
   const login = useCallback(async (email: string, password: string) => {
     const res = await apiFetch("/api/users/login", {
       method: "POST",
@@ -51,11 +69,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
       const nextToken = res.data.token as string;
       setUser(nextUser);
       setToken(nextToken);
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: nextUser, token: nextToken }));
-      } catch {
-        void 0;
-      }
+      persistAuth(nextUser, nextToken);
     } else {
       throw new Error("Invalid response from server");
     }
@@ -71,11 +85,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
       const nextToken = res.data.token as string;
       setUser(nextUser);
       setToken(nextToken);
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: nextUser, token: nextToken }));
-      } catch {
-        void 0;
-      }
+      persistAuth(nextUser, nextToken);
     } else {
       throw new Error("Invalid response from server");
     }
@@ -84,11 +94,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   const logout = useCallback(() => {
     setUser(null);
     setToken(null);
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-    } catch {
-      void 0;
-    }
+    persistAuth(null, null);
   }, []);
 
   const value: AuthState = {
@@ -97,6 +103,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     isAuthenticated: Boolean(user && token),
     login,
     signup,
+    updateUser,
     logout,
   };
 

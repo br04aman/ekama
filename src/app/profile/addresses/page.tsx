@@ -7,7 +7,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { apiFetch } from "@/lib/api";
-import { ChevronLeft, MapPin, MoreVertical, Trash2, Edit2, Plus } from "lucide-react";
+import { ADDRESS_STATE_OPTIONS, isAlphabeticName } from "@/lib/address-options";
+import { ChevronLeft, MapPin, Trash2, Edit2, Plus } from "lucide-react";
 import { useEffect, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 
@@ -32,7 +33,6 @@ export default function ManageAddresses() {
     const [addresses, setAddresses] = useState<Address[]>([]);
     const [isAddingAddress, setIsAddingAddress] = useState(false);
     const [editingAddressId, setEditingAddressId] = useState<string | null>(null);
-    const [openAddressMenuId, setOpenAddressMenuId] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 
     const [addressForm, setAddressForm] = useState({
@@ -70,12 +70,42 @@ export default function ManageAddresses() {
         fetchAddresses();
     }, [token]);
 
-    const updateAddressField = (field: keyof typeof addressForm) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const resetAddressForm = () => {
+        setAddressForm({
+            name: "", phone: "", pincode: "", locality: "", addressLine: "",
+            city: "", state: "", landmark: "", altPhone: "", label: "HOME"
+        });
+        setEditingAddressId(null);
+        setIsAddingAddress(false);
+    };
+
+    const updateAddressField = (field: keyof typeof addressForm) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setAddressForm((prev) => ({ ...prev, [field]: event.target.value }));
     };
 
     const handleSaveAddress = async () => {
         if (!token) return;
+        const normalizedName = addressForm.name.trim();
+        const normalizedState = addressForm.state.trim();
+
+        if (!isAlphabeticName(normalizedName)) {
+            toast({
+                title: "Invalid name",
+                description: "Address name must contain alphabets only.",
+                variant: "destructive",
+            });
+            return;
+        }
+
+        if (!ADDRESS_STATE_OPTIONS.includes(normalizedState as (typeof ADDRESS_STATE_OPTIONS)[number])) {
+            toast({
+                title: "Invalid state",
+                description: "Please choose a state from the list only.",
+                variant: "destructive",
+            });
+            return;
+        }
+
         try {
             if (editingAddressId) {
                 const res = await apiFetch(`/api/users/addresses/${editingAddressId}`, {
@@ -93,12 +123,7 @@ export default function ManageAddresses() {
                 if ((res as any)?.data?.addresses) setAddresses((res as any).data.addresses as Address[]);
             }
             toast({ title: editingAddressId ? "Address updated" : "Address saved" });
-            setIsAddingAddress(false);
-            setEditingAddressId(null);
-            setAddressForm({
-                name: "", phone: "", pincode: "", locality: "", addressLine: "",
-                city: "", state: "", landmark: "", altPhone: "", label: "HOME"
-            });
+            resetAddressForm();
         } catch (e) {
             toast({ title: "Error", description: String(e) });
         }
@@ -136,7 +161,10 @@ export default function ManageAddresses() {
                         <h1 className="text-2xl font-bold text-slate-900">Manage Addresses</h1>
                         {!isAddingAddress && (
                             <Button
-                                onClick={() => setIsAddingAddress(true)}
+                                onClick={() => {
+                                    setEditingAddressId(null);
+                                    setIsAddingAddress(true);
+                                }}
                                 className="bg-orange-600 hover:bg-orange-700 text-white gap-2 font-bold rounded-xl"
                             >
                                 <Plus className="h-4 w-4" />
@@ -156,6 +184,7 @@ export default function ManageAddresses() {
                                             className="w-full bg-slate-50 border border-slate-100 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
                                             value={addressForm.name}
                                             onChange={updateAddressField("name")}
+                                            placeholder="Full name"
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -203,11 +232,18 @@ export default function ManageAddresses() {
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-[10px] uppercase font-bold text-slate-400">State</label>
-                                        <input
+                                        <select
                                             className="w-full bg-slate-50 border border-slate-100 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
                                             value={addressForm.state}
                                             onChange={updateAddressField("state")}
-                                        />
+                                        >
+                                            <option value="">Select state</option>
+                                            {ADDRESS_STATE_OPTIONS.map((state) => (
+                                                <option key={state} value={state}>
+                                                    {state}
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
                                 </div>
 
@@ -221,8 +257,7 @@ export default function ManageAddresses() {
                                     <Button
                                         variant="ghost"
                                         onClick={() => {
-                                            setIsAddingAddress(false);
-                                            setEditingAddressId(null);
+                                            resetAddressForm();
                                         }}
                                         className="md:w-32 py-6 rounded-xl"
                                     >
@@ -240,7 +275,10 @@ export default function ManageAddresses() {
                                     <MapPin className="mx-auto h-12 w-12 text-slate-100 mb-4" />
                                     <p className="text-slate-500 mb-6">You haven't saved any addresses yet.</p>
                                     <Button
-                                        onClick={() => setIsAddingAddress(true)}
+                                        onClick={() => {
+                                            setEditingAddressId(null);
+                                            setIsAddingAddress(true);
+                                        }}
                                         className="bg-orange-50 text-orange-600 hover:bg-orange-100 font-bold px-8 rounded-xl"
                                     >
                                         Add your first address
@@ -258,38 +296,23 @@ export default function ManageAddresses() {
                                                     <p className="font-bold text-slate-900">{addr.name}</p>
                                                     <p className="text-slate-500 font-medium">{addr.phone}</p>
                                                 </div>
-                                                <div className="relative">
+                                                <div className="flex items-center gap-2">
                                                     <button
-                                                        onClick={() => setOpenAddressMenuId(openAddressMenuId === addr.id ? null : addr.id)}
-                                                        className="p-1 hover:bg-slate-50 rounded-full transition-colors"
+                                                        onClick={() => {
+                                                            setEditingAddressId(addr.id);
+                                                            setAddressForm({ ...addr });
+                                                            setIsAddingAddress(true);
+                                                        }}
+                                                        className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-50"
                                                     >
-                                                        <MoreVertical className="h-5 w-5 text-slate-400" />
+                                                        <Edit2 className="h-4 w-4" /> Edit
                                                     </button>
-
-                                                    {openAddressMenuId === addr.id && (
-                                                        <div className="absolute right-0 top-full mt-2 w-32 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-20 animate-in fade-in zoom-in duration-200">
-                                                            <button
-                                                                onClick={() => {
-                                                                    setEditingAddressId(addr.id);
-                                                                    setAddressForm({ ...addr });
-                                                                    setIsAddingAddress(true);
-                                                                    setOpenAddressMenuId(null);
-                                                                }}
-                                                                className="w-full px-4 py-2 text-left text-sm font-semibold text-slate-600 hover:bg-slate-50 flex items-center gap-2"
-                                                            >
-                                                                <Edit2 className="h-3 w-3" /> Edit
-                                                            </button>
-                                                            <button
-                                                                onClick={() => {
-                                                                    handleDeleteAddress(addr.id);
-                                                                    setOpenAddressMenuId(null);
-                                                                }}
-                                                                className="w-full px-4 py-2 text-left text-sm font-semibold text-red-500 hover:bg-red-50 flex items-center gap-2"
-                                                            >
-                                                                <Trash2 className="h-3 w-3" /> Delete
-                                                            </button>
-                                                        </div>
-                                                    )}
+                                                    <button
+                                                        onClick={() => handleDeleteAddress(addr.id)}
+                                                        className="inline-flex items-center gap-1 rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-sm font-semibold text-red-500 transition-colors hover:bg-red-100"
+                                                    >
+                                                        <Trash2 className="h-4 w-4" /> Delete
+                                                    </button>
                                                 </div>
                                             </div>
                                             <p className="text-slate-600 text-sm leading-relaxed max-w-md">

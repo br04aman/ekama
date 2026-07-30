@@ -8,17 +8,17 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ekama.onrender.com"),
-  title: "Ekama - Authentic Spiritual Products & Energy Stones",
-  description: "Discover ekama's exclusive collection of lab-certified spiritual items, handcrafted prayer beads, energy stones, and meditation essentials for your spiritual journey.",
+  title: "Ekmaa - Authentic Spiritual Products & Energy Stones",
+  description: "Discover ekmaa's exclusive collection of lab-certified spiritual items, handcrafted prayer beads, energy stones, and meditation essentials for your spiritual journey.",
   openGraph: {
-    title: "Ekama - Authentic Spiritual Products",
+    title: "Ekmaa - Authentic Spiritual Products",
     description: "Lab-certified spiritual items, prayer beads, and energy stones",
     type: "website",
     images: ["/images/banner.jpg"],
   },
   twitter: {
     card: "summary_large_image",
-    site: "@ekama",
+    site: "@ekmaa",
     images: ["/images/banner.jpg"],
   },
 };

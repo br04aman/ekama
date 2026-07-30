@@ -106,7 +106,8 @@ const Cart = () => {
                         <span className="px-3 text-sm font-semibold text-slate-800 bg-white min-w-[32px] text-center">{it.quantity}</span>
                         <button
                           onClick={() => addItem(it)}
-                          className="px-2 md:px-3 py-1 hover:bg-slate-100 text-slate-600 transition-colors font-bold"
+                          disabled={it.quantity >= 10}
+                          className="px-2 md:px-3 py-1 hover:bg-slate-100 text-slate-600 transition-colors font-bold disabled:cursor-not-allowed disabled:opacity-40"
                         >
                           +
                         </button>

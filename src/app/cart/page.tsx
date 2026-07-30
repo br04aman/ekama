@@ -107,7 +107,8 @@ export default function CartPage() {
                         <span className="w-8 md:w-10 text-center font-bold text-slate-700 text-sm">{it.quantity}</span>
                         <button
                           onClick={() => addItem(it)}
-                          className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center hover:bg-slate-200 transition-colors"
+                          disabled={it.quantity >= 10}
+                          className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center hover:bg-slate-200 transition-colors disabled:cursor-not-allowed disabled:opacity-40"
                         >
                           +
                         </button>

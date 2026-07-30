@@ -850,7 +850,7 @@ const Admin = () => {
             E
           </div>
           <div>
-            <div className="text-base font-semibold text-slate-900">Ekama Admin</div>
+            <div className="text-base font-semibold text-slate-900">Ekmaa Admin</div>
             <div className="text-xs text-slate-500">Workspace overview</div>
           </div>
         </div>
@@ -872,7 +872,7 @@ const Admin = () => {
             );
           })}
         </nav>
-        <div className="px-6 py-4 text-xs text-slate-400">Ekama admin console</div>
+        <div className="px-6 py-4 text-xs text-slate-400">Ekmaa admin console</div>
       </aside>
 
       <div className="flex-1 flex flex-col relative z-10">

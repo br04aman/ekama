@@ -11,7 +11,7 @@ export interface CartItem {
 
 interface CartState {
   items: CartItem[];
-  addItem: (item: Omit<CartItem, "quantity">) => void;
+  addItem: (item: Omit<CartItem, "quantity"> & { quantity?: number }) => void;
   removeItem: (id: string) => void;
   clearCart: () => void;
   totalItems: number;
@@ -21,12 +21,24 @@ interface CartState {
 const CartContext = createContext<CartState | null>(null);
 
 const STORAGE_KEY = "ekama-cart-v1";
+const MAX_CART_ITEM_QUANTITY = 10;
+
+const sanitizeQuantity = (quantity: unknown) => {
+  const parsed = typeof quantity === "number" ? quantity : Number(quantity);
+  if (!Number.isFinite(parsed) || parsed < 1) return 1;
+  return Math.min(MAX_CART_ITEM_QUANTITY, Math.floor(parsed));
+};
 
 const loadCart = (): CartItem[] => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map((item) => ({
+      ...item,
+      quantity: sanitizeQuantity(item?.quantity),
+    }));
   } catch {
     return [];
   }
@@ -47,13 +59,18 @@ export const CartProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     saveCart(items);
   }, [items]);
 
-  const addItem = useCallback((item: Omit<CartItem, "quantity">) => {
+  const addItem = useCallback((item: Omit<CartItem, "quantity"> & { quantity?: number }) => {
+    const incomingQuantity = sanitizeQuantity(item.quantity);
     setItems((prev) => {
       const existing = prev.find((p) => p.id === item.id);
       if (existing) {
-        return prev.map((p) => (p.id === item.id ? { ...p, quantity: p.quantity + 1 } : p));
+        return prev.map((p) =>
+          p.id === item.id
+            ? { ...p, quantity: Math.min(MAX_CART_ITEM_QUANTITY, p.quantity + incomingQuantity) }
+            : p
+        );
       }
-      return [...prev, { ...item, quantity: 1 }];
+      return [...prev, { ...item, quantity: incomingQuantity }];
     });
   }, []);
 

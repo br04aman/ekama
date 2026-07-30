@@ -219,7 +219,7 @@ const Payment = () => {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: amount.toString(),
         currency,
-        name: "Ekama",
+        name: "Ekmaa",
         description: "Order Payment",
         order_id: orderId,
         handler: async function (response: RazorpayHandlerResponse) {

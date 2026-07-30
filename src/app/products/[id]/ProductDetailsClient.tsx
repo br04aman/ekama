@@ -39,7 +39,7 @@ export default function ProductDetailsClient({ id }: { id: string }) {
   const [activeAccordion, setActiveAccordion] = useState<string | null>(null);
   const [qty, setQty] = useState<number>(1);
   const { toggleWishlist, isInWishlist } = useWishlist();
-  const { addItem } = useCart();
+  const { addItem, items } = useCart();
   const { toast } = useToast();
   const router = useRouter();
 
@@ -81,6 +81,18 @@ export default function ProductDetailsClient({ id }: { id: string }) {
   }, [product, selectedImageIdx]);
 
   const images = useMemo(() => product?.images || [], [product]);
+  const cartItemQuantity = useMemo(
+    () => items.find((item) => item.id === product?.id)?.quantity ?? 0,
+    [items, product?.id]
+  );
+  const remainingCartSpace = Math.max(0, 10 - cartItemQuantity);
+
+  useEffect(() => {
+    setQty((prev) => {
+      if (remainingCartSpace === 0) return 1;
+      return Math.min(prev, remainingCartSpace);
+    });
+  }, [remainingCartSpace]);
 
   const handlePrevImage = () => {
     if (images.length <= 1) return;
@@ -101,19 +113,27 @@ export default function ProductDetailsClient({ id }: { id: string }) {
 
   const handleAddToCart = (directBuy = false) => {
     if (!product) return;
+    if (remainingCartSpace === 0) {
+      toast({
+        title: "Cart limit reached",
+        description: `You can only add up to 10 units of ${product.name}.`
+      });
+      return;
+    }
+
+    const quantityToAdd = Math.min(qty, remainingCartSpace);
     setAdding(true);
     addItem({
       id: product.id,
       name: product.name,
       price: finalPrice,
       image: product.images[0] || "/placeholder.svg",
-      quantity: qty,
-      energized: isEnergized
+      quantity: quantityToAdd
     });
     
     toast({
       title: "Added to cart",
-      description: `${product.name} has been added to your cart.`
+      description: `${quantityToAdd} ${quantityToAdd === 1 ? "item" : "items"} of ${product.name} added to your cart.`
     });
     
     setAdding(false);
@@ -270,18 +290,47 @@ export default function ProductDetailsClient({ id }: { id: string }) {
 
             {/* Actions */}
             <div className="space-y-4 md:space-y-6">
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="flex h-12 md:h-14 flex-1 items-center justify-between rounded-xl border border-slate-200 bg-white px-4">
+                  <button
+                    type="button"
+                    onClick={() => setQty((prev) => Math.max(1, prev - 1))}
+                    disabled={remainingCartSpace === 0}
+                    className="text-xl font-medium text-slate-500 transition-colors hover:text-orange-600 disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    -
+                  </button>
+                  <div className="text-center">
+                    <p className="text-base font-bold text-slate-900">{remainingCartSpace === 0 ? 10 : qty}</p>
+                    <p className="text-[10px] font-medium uppercase tracking-wide text-slate-400">Qty</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setQty((prev) => Math.min(remainingCartSpace, prev + 1))}
+                    disabled={remainingCartSpace === 0 || qty >= remainingCartSpace}
+                    className="text-xl font-medium text-slate-500 transition-colors hover:text-orange-600 disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    +
+                  </button>
+                </div>
+                <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-right">
+                  <p className="text-xs font-semibold text-slate-500">In Cart</p>
+                  <p className="text-sm font-bold text-slate-900">{cartItemQuantity}/10</p>
+                </div>
+              </div>
+
               <div className="flex gap-3 md:gap-4">
                 <button
                   onClick={() => handleAddToCart(false)}
-                  disabled={adding}
+                  disabled={adding || remainingCartSpace === 0}
                   className="flex-1 h-12 md:h-14 bg-orange-100 text-orange-600 font-bold rounded-xl hover:bg-orange-200 transition-all flex items-center justify-center gap-2 border border-orange-200"
                 >
                   <ShoppingCart className="h-5 w-5" />
-                  ADD TO CART
+                  {remainingCartSpace === 0 ? "LIMIT REACHED" : "ADD TO CART"}
                 </button>
                 <button
                   onClick={() => handleAddToCart(true)}
-                  disabled={adding}
+                  disabled={adding || remainingCartSpace === 0}
                   className="flex-[1.5] h-12 md:h-14 bg-orange-600 text-white font-bold rounded-xl hover:bg-orange-700 transition-all shadow-lg shadow-orange-200 flex items-center justify-center gap-2"
                 >
                   BUY NOW

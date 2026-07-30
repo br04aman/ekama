@@ -218,7 +218,7 @@ export default function PaymentPage() {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
         amount: amount.toString(),
         currency,
-        name: "Ekama",
+        name: "Ekmaa",
         description: "Order Payment",
         order_id: orderId,
         handler: async function (response: RazorpayHandlerResponse) {
@@ -435,7 +435,7 @@ export default function PaymentPage() {
               </button>
               
               <p className="text-[10px] text-center text-slate-400 mt-4 leading-relaxed">
-                By placing the order, you agree to Ekama's Terms of Service and Privacy Policy.
+                By placing the order, you agree to Ekmaa's Terms of Service and Privacy Policy.
               </p>
             </div>
           </div>

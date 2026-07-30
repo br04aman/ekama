@@ -28,7 +28,7 @@ const features = [
   },
 ];
 
-const Features = ({ title = "The Ekama Promise" }: { title?: string }) => {
+const Features = ({ title = "The Ekmaa Promise" }: { title?: string }) => {
   return (
     <section className="py-12 bg-white shadow-sm">
       <div className="container mx-auto px-4">

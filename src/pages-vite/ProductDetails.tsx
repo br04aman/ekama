@@ -38,7 +38,7 @@ const ProductDetails = () => {
   const [activeAccordion, setActiveAccordion] = useState<string | null>(null);
   const [qty, setQty] = useState<number>(1);
   const { toggleWishlist, isInWishlist } = useWishlist();
-  const { addItem } = useCart();
+  const { addItem, items } = useCart();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -80,6 +80,18 @@ const ProductDetails = () => {
   }, [product, selectedImageIdx]);
 
   const images = useMemo(() => product?.images || [], [product]);
+  const cartItemQuantity = useMemo(
+    () => items.find((item) => item.id === product?.id)?.quantity ?? 0,
+    [items, product?.id]
+  );
+  const remainingCartSpace = Math.max(0, 10 - cartItemQuantity);
+
+  useEffect(() => {
+    setQty((prev) => {
+      if (remainingCartSpace === 0) return 1;
+      return Math.min(prev, remainingCartSpace);
+    });
+  }, [remainingCartSpace]);
 
   const handlePrevImage = () => {
     if (images.length <= 1) return;
@@ -100,6 +112,15 @@ const ProductDetails = () => {
 
   const handleAddToCart = () => {
     if (!product) return;
+    if (remainingCartSpace === 0) {
+      toast({
+        title: "Cart limit reached",
+        description: `You can only add up to 10 units of ${product.name}.`,
+      });
+      return;
+    }
+
+    const quantityToAdd = Math.min(qty, remainingCartSpace);
     setAdding(true);
     addItem({
       id: product.id,
@@ -107,10 +128,11 @@ const ProductDetails = () => {
       price: finalPrice,
       image: images[0],
       adminProductId: product.adminProductId,
+      quantity: quantityToAdd,
     });
     toast({
       title: "Added to Cart",
-      description: `${product.name} has been added to your cart.`,
+      description: `${quantityToAdd} ${quantityToAdd === 1 ? "item" : "items"} of ${product.name} added to your cart.`,
     });
     setTimeout(() => setAdding(false), 500);
   };
@@ -324,9 +346,21 @@ const ProductDetails = () => {
             <div className="space-y-3 mb-8">
               <div className="flex gap-3 h-12">
                 <div className="flex-1 flex items-center justify-between border-2 border-slate-200 rounded-lg px-4 bg-white">
-                  <button onClick={() => setQty(Math.max(1, qty - 1))} className="text-slate-500 hover:text-indigo-600 text-base font-medium">−</button>
-                  <span className="font-semibold text-slate-900">{qty}</span>
-                  <button onClick={() => setQty(qty + 1)} className="text-slate-500 hover:text-indigo-600 text-base font-medium">+</button>
+                  <button
+                    onClick={() => setQty(Math.max(1, qty - 1))}
+                    disabled={remainingCartSpace === 0}
+                    className="text-slate-500 hover:text-indigo-600 text-base font-medium disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    −
+                  </button>
+                  <span className="font-semibold text-slate-900">{remainingCartSpace === 0 ? 10 : qty}</span>
+                  <button
+                    onClick={() => setQty(Math.min(remainingCartSpace, qty + 1))}
+                    disabled={remainingCartSpace === 0 || qty >= remainingCartSpace}
+                    className="text-slate-500 hover:text-indigo-600 text-base font-medium disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    +
+                  </button>
                 </div>
                 <button
                   onClick={() => toggleWishlist(product.id)}
@@ -338,9 +372,10 @@ const ProductDetails = () => {
 
               <button
                 onClick={handleBuyNow}
+              disabled={adding || remainingCartSpace === 0}
                 className="w-full h-12 rounded-lg bg-gradient-to-r from-amber-400 to-orange-500 text-white font-bold text-base shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:-translate-y-0.5 transition-all active:scale-[0.98]"
               >
-                ORDER NOW
+              {remainingCartSpace === 0 ? "LIMIT REACHED" : "ORDER NOW"}
               </button>
             </div>
 
@@ -468,15 +503,28 @@ const ProductDetails = () => {
           </div>
           <div className="flex items-center gap-2">
             <div className="hidden sm:flex items-center border border-slate-200 rounded-md bg-slate-50 mr-2">
-              <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-7 h-9 flex justify-center items-center text-slate-500 hover:text-indigo-600 font-medium">−</button>
-              <div className="w-7 h-9 flex justify-center items-center font-medium text-slate-900 text-[13px]">{qty}</div>
-              <button onClick={() => setQty(qty + 1)} className="w-7 h-9 flex justify-center items-center text-slate-500 hover:text-indigo-600 font-medium">+</button>
+              <button
+                onClick={() => setQty(Math.max(1, qty - 1))}
+                disabled={remainingCartSpace === 0}
+                className="w-7 h-9 flex justify-center items-center text-slate-500 hover:text-indigo-600 font-medium disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                −
+              </button>
+              <div className="w-7 h-9 flex justify-center items-center font-medium text-slate-900 text-[13px]">{remainingCartSpace === 0 ? 10 : qty}</div>
+              <button
+                onClick={() => setQty(Math.min(remainingCartSpace, qty + 1))}
+                disabled={remainingCartSpace === 0 || qty >= remainingCartSpace}
+                className="w-7 h-9 flex justify-center items-center text-slate-500 hover:text-indigo-600 font-medium disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                +
+              </button>
             </div>
             <button
               onClick={handleBuyNow}
+              disabled={adding || remainingCartSpace === 0}
               className="h-10 px-5 lg:px-8 rounded-lg bg-gradient-to-r from-amber-400 to-orange-500 text-white font-bold text-sm whitespace-nowrap shadow-sm shadow-orange-500/20 active:scale-95 transition-transform"
             >
-              ORDER NOW
+              {remainingCartSpace === 0 ? "LIMIT REACHED" : "ORDER NOW"}
             </button>
           </div>
         </div>

@@ -10,7 +10,7 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <h3 className="text-2xl font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent mb-4">
-              ekama
+              ekmaa
             </h3>
             <p className="text-sm text-muted-foreground mb-4">
               Your trusted source for authentic spiritual products and energy stones.
@@ -106,7 +106,7 @@ const Footer = () => {
         <div className="pt-8 border-t">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground text-center md:text-left">
-              © 2024 Ekama. All rights reserved.
+              © 2024 Ekmaa. All rights reserved.
             </p>
             <div className="flex gap-4 text-sm text-muted-foreground">
               <a href="#" className="hover:text-primary transition-colors">

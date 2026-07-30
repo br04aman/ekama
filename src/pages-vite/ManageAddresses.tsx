@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
+import { ADDRESS_STATE_OPTIONS, isAlphabeticName } from "@/lib/address-options";
 import { apiFetch } from "@/lib/api";
-import { ChevronLeft, MapPin, MoreVertical, Trash2, Edit2, Plus } from "lucide-react";
+import { ChevronLeft, Edit2, MapPin, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState, type ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -29,7 +30,6 @@ const ManageAddresses = () => {
     const [addresses, setAddresses] = useState<Address[]>([]);
     const [isAddingAddress, setIsAddingAddress] = useState(false);
     const [editingAddressId, setEditingAddressId] = useState<string | null>(null);
-    const [openAddressMenuId, setOpenAddressMenuId] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 
     const [addressForm, setAddressForm] = useState({
@@ -67,12 +67,42 @@ const ManageAddresses = () => {
         fetchAddresses();
     }, [token]);
 
-    const updateAddressField = (field: keyof typeof addressForm) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const resetAddressForm = () => {
+        setAddressForm({
+            name: "", phone: "", pincode: "", locality: "", addressLine: "",
+            city: "", state: "", landmark: "", altPhone: "", label: "HOME"
+        });
+        setEditingAddressId(null);
+        setIsAddingAddress(false);
+    };
+
+    const updateAddressField = (field: keyof typeof addressForm) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setAddressForm((prev) => ({ ...prev, [field]: event.target.value }));
     };
 
     const handleSaveAddress = async () => {
         if (!token) return;
+        const normalizedName = addressForm.name.trim();
+        const normalizedState = addressForm.state.trim();
+
+        if (!isAlphabeticName(normalizedName)) {
+            toast({
+                title: "Invalid name",
+                description: "Address name must contain alphabets only.",
+                variant: "destructive",
+            });
+            return;
+        }
+
+        if (!ADDRESS_STATE_OPTIONS.includes(normalizedState as (typeof ADDRESS_STATE_OPTIONS)[number])) {
+            toast({
+                title: "Invalid state",
+                description: "Please choose a state from the list only.",
+                variant: "destructive",
+            });
+            return;
+        }
+
         try {
             if (editingAddressId) {
                 const res = await apiFetch(`/api/users/addresses/${editingAddressId}`, {
@@ -90,12 +120,7 @@ const ManageAddresses = () => {
                 if (res?.data?.addresses) setAddresses(res.data.addresses as Address[]);
             }
             toast({ title: editingAddressId ? "Address updated" : "Address saved" });
-            setIsAddingAddress(false);
-            setEditingAddressId(null);
-            setAddressForm({
-                name: "", phone: "", pincode: "", locality: "", addressLine: "",
-                city: "", state: "", landmark: "", altPhone: "", label: "HOME"
-            });
+            resetAddressForm();
         } catch (e) {
             toast({ title: "Error", description: String(e) });
         }
@@ -132,7 +157,10 @@ const ManageAddresses = () => {
                     <h1 className="text-2xl font-bold text-slate-900">Manage Addresses</h1>
                     {!isAddingAddress && (
                         <Button
-                            onClick={() => setIsAddingAddress(true)}
+                            onClick={() => {
+                                setEditingAddressId(null);
+                                setIsAddingAddress(true);
+                            }}
                             className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-xl shadow-md transition-all active:scale-95"
                         >
                             <Plus className="h-5 w-5 mr-2" />
@@ -204,12 +232,18 @@ const ManageAddresses = () => {
                                 </div>
                                 <div className="space-y-1">
                                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">State</p>
-                                    <input
+                                    <select
                                         className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-orange-500/20 outline-none transition-all"
-                                        placeholder="State"
                                         value={addressForm.state}
                                         onChange={updateAddressField("state")}
-                                    />
+                                    >
+                                        <option value="">Select state</option>
+                                        {ADDRESS_STATE_OPTIONS.map((state) => (
+                                            <option key={state} value={state}>
+                                                {state}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
 
@@ -239,7 +273,7 @@ const ManageAddresses = () => {
                                     {editingAddressId ? "Update Address" : "Save Address"}
                                 </Button>
                                 <button
-                                    onClick={() => setIsAddingAddress(false)}
+                                    onClick={resetAddressForm}
                                     className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-4 rounded-xl transition-all"
                                 >
                                     Cancel
@@ -265,22 +299,22 @@ const ManageAddresses = () => {
                                         <span className="px-3 py-1 bg-orange-50 text-orange-700 text-[10px] font-bold rounded-full uppercase tracking-wider">
                                             {addr.label}
                                         </span>
-                                        <div className="flex items-center gap-1 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <div className="flex items-center gap-2">
                                             <button
                                                 onClick={() => {
                                                     setAddressForm(addr as any);
                                                     setEditingAddressId(addr.id);
                                                     setIsAddingAddress(true);
                                                 }}
-                                                className="p-2 text-slate-400 hover:text-orange-600 transition-colors"
+                                                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-50"
                                             >
-                                                <Edit2 className="h-4 w-4" />
+                                                <Edit2 className="h-4 w-4" /> Edit
                                             </button>
                                             <button
                                                 onClick={() => handleDeleteAddress(addr.id)}
-                                                className="p-2 text-slate-400 hover:text-red-600 transition-colors"
+                                                className="inline-flex items-center gap-1 rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-sm font-semibold text-red-500 transition-colors hover:bg-red-100"
                                             >
-                                                <Trash2 className="h-4 w-4" />
+                                                <Trash2 className="h-4 w-4" /> Delete
                                             </button>
                                         </div>
                                     </div>

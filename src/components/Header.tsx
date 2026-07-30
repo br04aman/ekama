@@ -67,7 +67,7 @@ const Header = () => {
                     एकमा
                   </span>
                   <span className="absolute text-3xl font-bold bg-gradient-to-r from-black via-red-600 to-black bg-clip-text text-transparent animate-flash-english">
-                    ekama
+                    ekmaa
                   </span>
                 </div>
                 <span className="text-sm text-orange-600 font-medium tracking-wide">

@@ -373,7 +373,7 @@ const AdminClient = () => {
         <div className="p-6 flex items-center gap-3">
           <div className="h-10 w-10 rounded-xl bg-orange-600 flex items-center justify-center text-lg font-bold">E</div>
           <div>
-            <div className="font-bold">Ekama Admin</div>
+            <div className="font-bold">Ekmaa Admin</div>
             <div className="text-[10px] text-slate-400 uppercase tracking-widest">Workspace</div>
           </div>
         </div>

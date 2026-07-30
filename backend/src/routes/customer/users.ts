@@ -78,18 +78,94 @@ const resolveString = (body: Record<string, unknown>, keys: string[]) => {
   return '';
 };
 
+const isValidName = (value: string) => /^[A-Za-z]+(?: [A-Za-z]+)*$/.test(value);
+
+const isValidPhone = (value: string) => /^[6-9]\d{9}$/.test(value);
+
+const toPublicUser = (user: UserDoc) => ({
+  id: user.id,
+  email: user.email,
+  firstName: user.firstName,
+  lastName: user.lastName,
+  phone: user.phone,
+  role: user.role
+});
+
+const allowedAddressStates = [
+  'Andhra Pradesh',
+  'Arunachal Pradesh',
+  'Assam',
+  'Bihar',
+  'Chhattisgarh',
+  'Goa',
+  'Gujarat',
+  'Haryana',
+  'Himachal Pradesh',
+  'Jharkhand',
+  'Karnataka',
+  'Kerala',
+  'Madhya Pradesh',
+  'Maharashtra',
+  'Manipur',
+  'Meghalaya',
+  'Mizoram',
+  'Nagaland',
+  'Odisha',
+  'Punjab',
+  'Rajasthan',
+  'Sikkim',
+  'Tamil Nadu',
+  'Telangana',
+  'Tripura',
+  'Uttar Pradesh',
+  'Uttarakhand',
+  'West Bengal'
+] as const;
+
+const isAllowedAddressState = (value: string) =>
+  allowedAddressStates.includes(value as (typeof allowedAddressStates)[number]);
+
 router.post('/register', async (req, res) => {
   const users = getUsersCollection();
   const { email, password, firstName, lastName, phone } = req.body;
 
   const rawEmail = typeof email === 'string' ? email.trim() : '';
   const normalizedEmail = rawEmail.toLowerCase();
+  const rawPassword = typeof password === 'string' ? password : '';
+  const normalizedFirstName = normalizeString(firstName);
+  const normalizedLastName = normalizeString(lastName);
+  const normalizedPhone = normalizeString(phone).replace(/\D/g, '').slice(0, 10);
 
-  if (!rawEmail || !password || !firstName || !phone) {
+  if (!rawEmail || !rawPassword || !normalizedFirstName || !normalizedPhone) {
     res.status(400).json({
       success: false,
       error: 'Email, password, first name, and phone are required'
     } as ApiResponse<null>);
+    return;
+  }
+
+    if (!isValidName(normalizedFirstName)) {
+    res.status(400).json({ success: false, error: 'First name must contain alphabets only' } as ApiResponse<null>);
+    return;
+  }
+
+    if (normalizedLastName && !isValidName(normalizedLastName)) {
+    res.status(400).json({ success: false, error: 'Last name must contain alphabets only' } as ApiResponse<null>);
+    return;
+  }
+
+  if (!/^[A-Za-z0-9._%+-]+@gmail\.com$/i.test(normalizedEmail)) {
+    res.status(400).json({ success: false, error: 'Email must end with gmail.com' } as ApiResponse<null>);
+    return;
+  }
+
+    if (!isValidPhone(normalizedPhone)) {
+    res.status(400).json({ success: false, error: 'Mobile number must be 10 digits and start with 6-9' } as ApiResponse<null>);
+    return;
+  }
+
+  if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/.test(rawPassword)) {
+    res.status(400).json({ success: false, error: 'Password must be 8-16 characters and alphanumeric' } as ApiResponse<null>);
     return;
   }
 
@@ -103,16 +179,16 @@ router.post('/register', async (req, res) => {
       return;
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(rawPassword, 10);
     const userId = Math.random().toString(36).substring(2, 15);
     const now = new Date();
     const userDoc: UserDoc = {
       id: userId,
       email: normalizedEmail,
       password: hashedPassword,
-      firstName,
-      lastName: lastName || '',
-      phone: phone,
+      firstName: normalizedFirstName,
+      lastName: normalizedLastName || '',
+      phone: normalizedPhone,
       role: 'customer',
       isActive: true,
       addresses: [],
@@ -135,9 +211,9 @@ router.post('/register', async (req, res) => {
         user: {
           id: userId,
           email: normalizedEmail,
-          firstName,
-          lastName: lastName || '',
-          phone: phone,
+          firstName: normalizedFirstName,
+          lastName: normalizedLastName || '',
+          phone: normalizedPhone,
           role: 'customer'
         },
         token
@@ -204,13 +280,7 @@ router.post('/login', async (req, res) => {
     res.json({
       success: true,
       data: {
-        user: {
-          id: userRow.id,
-          email: userRow.email,
-          firstName: userRow.firstName,
-          lastName: userRow.lastName,
-          role: userRow.role
-        },
+        user: toPublicUser(userRow),
         token
       },
       message: 'Login successful'
@@ -285,7 +355,11 @@ router.post('/addresses', authenticateToken, async (req, res) => {
   };
 
   const missing: string[] = [];
-  if (!name) missing.push('Name');
+  if (!name) {
+    missing.push('Name');
+  } else if (!isValidName(name)) {
+    missing.push('Name (alphabets only)');
+  }
   if (!phone) {
     missing.push('Phone');
   } else if (!validatePhone(phone)) {
@@ -293,7 +367,11 @@ router.post('/addresses', authenticateToken, async (req, res) => {
   }
   if (!addressLine) missing.push('Address');
   if (!city) missing.push('City');
-  if (!state) missing.push('State');
+  if (!state) {
+    missing.push('State');
+  } else if (!isAllowedAddressState(state)) {
+    missing.push('State (choose a valid state from the list)');
+  }
   if (!pincode) {
     missing.push('Pincode');
   } else if (!validatePincode(pincode)) {
@@ -398,7 +476,11 @@ router.patch('/addresses/:id', authenticateToken, async (req, res) => {
     };
 
     const missing: string[] = [];
-    if (!name) missing.push('Name');
+    if (!name) {
+      missing.push('Name');
+    } else if (!isValidName(name)) {
+      missing.push('Name (alphabets only)');
+    }
     if (!phone) {
       missing.push('Phone');
     } else if (!validatePhone(phone)) {
@@ -406,7 +488,11 @@ router.patch('/addresses/:id', authenticateToken, async (req, res) => {
     }
     if (!addressLine) missing.push('Address');
     if (!city) missing.push('City');
-    if (!state) missing.push('State');
+    if (!state) {
+      missing.push('State');
+    } else if (!isAllowedAddressState(state)) {
+      missing.push('State (choose a valid state from the list)');
+    }
     if (missing.length > 0) {
       res.status(400).json({
         success: false,
@@ -478,7 +564,7 @@ router.get('/profile', authenticateToken, (req, res) => {
   const userId = authReq.user.userId;
   users.findOne(
     { id: userId },
-    { projection: { _id: 0, id: 1, email: 1, firstName: 1, lastName: 1, role: 1, isActive: 1, createdAt: 1 } }
+    { projection: { _id: 0, id: 1, email: 1, firstName: 1, lastName: 1, phone: 1, role: 1, isActive: 1, createdAt: 1 } }
   )
     .then((userRow: UserDoc | null) => {
       if (!userRow) {
@@ -505,6 +591,82 @@ router.get('/profile', authenticateToken, (req, res) => {
         error: 'Failed to fetch user profile'
       } as ApiResponse<null>);
     });
+});
+
+router.patch('/profile', authenticateToken, async (req, res) => {
+  const users = getUsersCollection();
+  const authReq = req as AuthenticatedRequest;
+  const userId = authReq.user.userId;
+  const { firstName, lastName, phone } = (req.body || {}) as Record<string, unknown>;
+
+  const normalizedFirstName = normalizeString(firstName);
+  const normalizedLastName = normalizeString(lastName);
+  const normalizedPhone = normalizeString(phone).replace(/\D/g, '').slice(0, 10);
+
+  if (!normalizedFirstName || !normalizedPhone) {
+    res.status(400).json({
+      success: false,
+      error: 'First name and phone are required'
+    } as ApiResponse<null>);
+    return;
+  }
+
+  if (!isValidName(normalizedFirstName)) {
+    res.status(400).json({ success: false, error: 'First name must contain alphabets only' } as ApiResponse<null>);
+    return;
+  }
+
+  if (normalizedLastName && !isValidName(normalizedLastName)) {
+    res.status(400).json({ success: false, error: 'Last name must contain alphabets only' } as ApiResponse<null>);
+    return;
+  }
+
+  if (!isValidPhone(normalizedPhone)) {
+    res.status(400).json({ success: false, error: 'Mobile number must be 10 digits and start with 6-9' } as ApiResponse<null>);
+    return;
+  }
+
+  try {
+    const userRow = (await users.findOne({ id: userId })) as UserDoc | null;
+    if (!userRow) {
+      res.status(404).json({ success: false, error: 'User not found' } as ApiResponse<null>);
+      return;
+    }
+
+    const updatedUser: UserDoc = {
+      ...userRow,
+      firstName: normalizedFirstName,
+      lastName: normalizedLastName,
+      phone: normalizedPhone,
+      updatedAt: new Date()
+    };
+
+    await users.updateOne(
+      { id: userId },
+      {
+        $set: {
+          firstName: updatedUser.firstName,
+          lastName: updatedUser.lastName,
+          phone: updatedUser.phone,
+          updatedAt: updatedUser.updatedAt
+        }
+      }
+    );
+
+    res.json({
+      success: true,
+      data: {
+        user: toPublicUser(updatedUser)
+      },
+      message: 'Profile updated successfully'
+    } as ApiResponse<{ user: AuthResponse['user'] }>);
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to update profile'
+    } as ApiResponse<null>);
+  }
 });
 
 function authenticateToken(req: express.Request, res: express.Response, next: express.NextFunction) {

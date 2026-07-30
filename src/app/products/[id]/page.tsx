@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
   if (!product) {
     return {
-      title: "Product Not Found | Ekama",
+      title: "Product Not Found | Ekmaa",
     };
   }
 
@@ -45,8 +45,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     : `${BASE_URL}${product.images?.[0]}`;
 
   return {
-    title: `${product.name} | Ekama`,
-    description: product.description || `Buy ${product.name} at Ekama. Authentic spiritual products.`,
+    title: `${product.name} | Ekmaa`,
+    description: product.description || `Buy ${product.name} at Ekmaa. Authentic spiritual products.`,
     openGraph: {
       title: product.name,
       description: product.description,
