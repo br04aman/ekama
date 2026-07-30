@@ -2,7 +2,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { useCart } from "@/hooks/use-cart";
 import { apiFetch, getImageUrl } from "@/lib/api";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 
 interface Product {
@@ -21,11 +21,13 @@ const normalizeImage = (image?: string) => {
 
 const CollectionPage = () => {
   const params = useParams();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
 
   // Determine if we are in a virtual category based on path
   const isTrending = pathname.includes("/trending");
   const isNewArrivals = pathname.includes("/new-arrivals");
+  const rawSearchQuery = new URLSearchParams(search).get("q")?.trim() ?? "";
+  const normalizedSearchQuery = rawSearchQuery.toLowerCase();
 
   const collectionId = params.id || (isTrending ? "trending" : isNewArrivals ? "new-arrivals" : "rudraksha-bracelets");
   const { addItem, decrementItem, items } = useCart();
@@ -114,6 +116,25 @@ const CollectionPage = () => {
     };
   }, [collectionId, isTrending, isNewArrivals]);
 
+  const filteredProducts = useMemo(() => {
+    if (!normalizedSearchQuery) {
+      return products;
+    }
+
+    return products.filter((product) => {
+      const searchableText = [
+        product.name,
+        product.description,
+        product.adminProductId,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      return searchableText.includes(normalizedSearchQuery);
+    });
+  }, [products, normalizedSearchQuery]);
+
   const handleMouseEnter = () => setHovering(true);
   const handleMouseLeave = () => setHovering(false);
 
@@ -124,7 +145,14 @@ const CollectionPage = () => {
       {/* Filters & Controls - Minimal Style */}
       <section className="w-full bg-white/0 pt-4 pb-2 md:pt-8">
         <div className="max-w-[1100px] mx-auto px-4">
-          <h1 className="text-xl md:text-2xl font-bold text-slate-900 mb-4">{title}</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">
+            {rawSearchQuery ? `Search Results for "${rawSearchQuery}"` : title}
+          </h1>
+          {rawSearchQuery && (
+            <p className="text-xs md:text-sm text-slate-500 mb-4">
+              {filteredProducts.length} product{filteredProducts.length === 1 ? "" : "s"} found
+            </p>
+          )}
           <div className="flex items-center justify-between text-[10px] md:text-sm text-slate-500 mb-4 bg-white p-2 rounded-lg shadow-sm border border-slate-100 overflow-x-auto no-scrollbar">
             <div className="flex items-center gap-2 whitespace-nowrap">
               <select className="bg-transparent border-none outline-none font-medium text-slate-700 cursor-pointer">
@@ -156,9 +184,9 @@ const CollectionPage = () => {
         {error && !loading && (
           <div className="py-20 text-center text-red-600 bg-white rounded-2xl shadow-sm mx-2">{error}</div>
         )}
-        {!loading && !error && (
+        {!loading && !error && filteredProducts.length > 0 && (
           <div className="grid gap-3 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {products.map((p, i) => (
+            {filteredProducts.map((p, i) => (
               <Link
                 to={`/products/${p.id}`}
                 key={p.id}
@@ -240,6 +268,11 @@ const CollectionPage = () => {
                 </div>
               </Link>
             ))}
+          </div>
+        )}
+        {!loading && !error && filteredProducts.length === 0 && (
+          <div className="py-20 text-center text-slate-500 bg-white rounded-2xl shadow-sm mx-2">
+            {rawSearchQuery ? "No matching products found." : "No products found."}
           </div>
         )}
       </main>

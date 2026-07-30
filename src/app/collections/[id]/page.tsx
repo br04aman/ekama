@@ -6,8 +6,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useCart } from "@/hooks/use-cart";
 import { apiFetch, getImageUrl } from "@/lib/api";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { use, useEffect, useMemo, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 
 interface Product {
@@ -27,10 +27,13 @@ const normalizeImage = (image?: string) => {
 export default function CollectionPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   // Determine if we are in a virtual category based on path
   const isTrending = pathname?.includes("/trending");
   const isNewArrivals = pathname?.includes("/new-arrivals");
+  const rawSearchQuery = searchParams.get("q")?.trim() ?? "";
+  const normalizedSearchQuery = rawSearchQuery.toLowerCase();
 
   const collectionId = resolvedParams.id || (isTrending ? "trending" : isNewArrivals ? "new-arrivals" : "rudraksha-bracelets");
   const { addItem, decrementItem, items } = useCart();
@@ -108,6 +111,25 @@ export default function CollectionPage({ params }: { params: Promise<{ id: strin
     return () => { active = false; };
   }, [collectionId, isTrending, isNewArrivals]);
 
+  const filteredProducts = useMemo(() => {
+    if (!normalizedSearchQuery) {
+      return products;
+    }
+
+    return products.filter((product) => {
+      const searchableText = [
+        product.name,
+        product.description,
+        product.adminProductId,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      return searchableText.includes(normalizedSearchQuery);
+    });
+  }, [products, normalizedSearchQuery]);
+
   const getItemCount = (productId: string) => {
     return items.find((i) => i.id === productId)?.quantity || 0;
   };
@@ -120,7 +142,14 @@ export default function CollectionPage({ params }: { params: Promise<{ id: strin
           <Link href="/" className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-800 font-medium mb-4">
             <ArrowLeft className="w-5 h-5" />
           </Link>
-          <h1 className="text-3xl font-bold text-orange-900 mb-2">{title}</h1>
+          <h1 className="text-3xl font-bold text-orange-900 mb-2">
+            {rawSearchQuery ? `Search Results for "${rawSearchQuery}"` : title}
+          </h1>
+          {rawSearchQuery && (
+            <p className="text-sm text-slate-500 mb-2">
+              {filteredProducts.length} product{filteredProducts.length === 1 ? "" : "s"} found
+            </p>
+          )}
           <div className="h-1 w-20 bg-gradient-to-r from-orange-500 to-red-500 rounded-full" />
         </div>
 
@@ -145,13 +174,15 @@ export default function CollectionPage({ params }: { params: Promise<{ id: strin
               Try Again
             </button>
           </div>
-        ) : products.length === 0 ? (
+        ) : filteredProducts.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-2xl shadow-sm">
-            <p className="text-slate-500">No products found in this collection.</p>
+            <p className="text-slate-500">
+              {rawSearchQuery ? "No matching products found." : "No products found in this collection."}
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {products.map((product) => {
+            {filteredProducts.map((product) => {
               const count = getItemCount(product.id);
               return (
                 <div
