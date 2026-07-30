@@ -1,5 +1,6 @@
 import AdminClient from "./AdminClient";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard | Ekmaa",
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function AdminDashboardPage() {
-  return <AdminClient />;
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-slate-500">Loading admin dashboard...</div>}>
+      <AdminClient />
+    </Suspense>
+  );
 }

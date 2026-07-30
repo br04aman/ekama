@@ -7,7 +7,7 @@ import { useCart } from "@/hooks/use-cart";
 import { apiFetch, getImageUrl } from "@/lib/api";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { use, useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState, Suspense } from "react";
 import { ArrowLeft } from "lucide-react";
 
 interface Product {
@@ -24,7 +24,7 @@ const normalizeImage = (image?: string) => {
   return getImageUrl(image);
 };
 
-export default function CollectionPage({ params }: { params: Promise<{ id: string }> }) {
+function CollectionPageContent({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params);
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -258,5 +258,17 @@ export default function CollectionPage({ params }: { params: Promise<{ id: strin
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function CollectionPage(props: { params: Promise<{ id: string }> }) {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-8 text-slate-500 font-medium">
+        Loading collection...
+      </div>
+    }>
+      <CollectionPageContent {...props} />
+    </Suspense>
   );
 }

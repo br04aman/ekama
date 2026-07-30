@@ -5,9 +5,9 @@ import { useAuth } from "@/hooks/use-auth";
 import { Search, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState, Suspense } from "react";
 
-const Header = () => {
+const HeaderContent = () => {
   const { isAuthenticated, user } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
@@ -147,4 +147,20 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default function Header() {
+  return (
+    <Suspense fallback={
+      <header className="sticky top-0 z-50 w-full bg-white shadow-sm border-b border-orange-200">
+        <div className="max-w-[1100px] mx-auto flex h-24 items-center justify-between px-4">
+          <Link href="/" className="flex items-center space-x-3">
+            <span className="text-3xl font-bold bg-gradient-to-r from-black via-red-600 to-black bg-clip-text text-transparent">
+              एकमा
+            </span>
+          </Link>
+        </div>
+      </header>
+    }>
+      <HeaderContent />
+    </Suspense>
+  );
+}
