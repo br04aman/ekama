@@ -61,21 +61,41 @@ async function getInitialData(settings: StoreSettingsDoc | null) {
   const trendingProductIds = settings?.trendingProductIds || [];
   const newArrivalsProductIds = settings?.newArrivalsProductIds || [];
   
-  const [collectionsRes, trendingRes, newArrivalsRes] = await Promise.all([
-    apiFetch('/api/collections?limit=100', { cache: 'no-store' }),
-    trendingProductIds.length > 0 
-      ? apiFetch(`/api/products?ids=${trendingProductIds.join(',')}&limit=${trendingProductIds.length}`, { cache: 'no-store' })
-      : apiFetch("/api/products?limit=6&sortBy=rating&sortOrder=DESC", { cache: 'no-store' }),
-    newArrivalsProductIds.length > 0
-      ? apiFetch(`/api/products?ids=${newArrivalsProductIds.join(',')}&limit=${newArrivalsProductIds.length}`, { cache: 'no-store' })
-      : apiFetch("/api/products?limit=6&sortBy=createdAt&sortOrder=DESC", { cache: 'no-store' })
-  ]);
+  try {
+    const [collectionsRes, trendingRes, newArrivalsRes] = await Promise.all([
+      apiFetch('/api/collections?limit=100', { cache: 'no-store' }).catch((err) => {
+        console.error("Failed to fetch initial collections:", err);
+        return { data: [] };
+      }),
+      (trendingProductIds.length > 0 
+        ? apiFetch(`/api/products?ids=${trendingProductIds.join(',')}&limit=${trendingProductIds.length}`, { cache: 'no-store' })
+        : apiFetch("/api/products?limit=6&sortBy=rating&sortOrder=DESC", { cache: 'no-store' })
+      ).catch((err) => {
+        console.error("Failed to fetch initial trending products:", err);
+        return { data: [] };
+      }),
+      (newArrivalsProductIds.length > 0
+        ? apiFetch(`/api/products?ids=${newArrivalsProductIds.join(',')}&limit=${newArrivalsProductIds.length}`, { cache: 'no-store' })
+        : apiFetch("/api/products?limit=6&sortBy=createdAt&sortOrder=DESC", { cache: 'no-store' })
+      ).catch((err) => {
+        console.error("Failed to fetch initial new arrivals:", err);
+        return { data: [] };
+      })
+    ]);
 
-  return {
-    initialCollections: collectionsRes?.data || [],
-    initialTrending: trendingRes?.data || [],
-    initialNewArrivals: newArrivalsRes?.data || []
-  };
+    return {
+      initialCollections: collectionsRes?.data || [],
+      initialTrending: trendingRes?.data || [],
+      initialNewArrivals: newArrivalsRes?.data || []
+    };
+  } catch (error) {
+    console.error("Failed to fetch initial data:", error);
+    return {
+      initialCollections: [],
+      initialTrending: [],
+      initialNewArrivals: []
+    };
+  }
 }
 
 export default async function Home() {
